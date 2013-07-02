@@ -14,11 +14,6 @@ api = auth.set_access_token(access_key, access_secret)
 api = tweepy.API(auth)
 
 CELEBS = cPickle.load(open('celebs', 'rb'))
-#Set up OEmbed function
-api.get_oembed = types.MethodType(tweepy.binder.bind_api(
-    path = '/statuses/oembed.json',
-    payload_type = 'json',
-    allowed_param = ['id', 'url', 'maxwidth', 'hide_media', 'omit_script', 'align', 'related', 'lang']), api)
 
 #Set Lock?
 lock = Lock()
