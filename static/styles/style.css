@@ -1,0 +1,32 @@
+*{
+  font-family:Ubuntu, Garamond, sans-serif;
+  color:brown;
+  font-size:12px;
+  text-shadow:
+  -1px -1px 0 #FFFFFF,
+  1px -1px 0 #FFFFFF,
+  -1px 1px 0 #FFFFFF;
+  1px 1px 0 #FFFFFF;
+  }
+
+div.transbox{
+  background-color:#800000;
+  opacity:0.6;
+  }
+
+div.music{}
+
+div.database{}
+
+div.upload{}
+
+body{
+  background:url('/static/user/bg.jpg') no-repeat center center fixed;
+  background-size:100% 100%; 
+}
+
+.bgAdd{
+  border-radius:0px;
+  background:url('/static/icons/searchbox.jpg');
+  padding:4px;
+  }

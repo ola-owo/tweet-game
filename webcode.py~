@@ -1,0 +1,194 @@
+#!/usr/bin/python
+# vim: set fileencoding=latin-1
+#First attempt at a Web.py website
+import web, cgi, cPickle, pytz, sqlite3
+from datetime import datetime, timedelta
+from dateutil.parser import parse as dateparser
+from subprocess import PIPE, Popen, STDOUT
+import reddit, weather, twitter
+
+urls = (
+    '/', 'index',
+    '/add', 'add',
+    '/remove/(\d+)', 'remove',
+    '/bg_add', 'bg_add',
+    '/special/?', 'birthday',
+    '/reddit/?', 'reddit_frontpage',
+    '/weather/?', 'weather_api',
+    '/change_location', 'change_location',
+    '/twitter/?', 'who_said',
+    '/guess_tweet', 'guess_tweet',
+    '/(.*)/?', 'NotFound',
+    )
+
+web.config.debug = False
+app = web.application(urls, globals())
+render = web.template.render('templates/')
+db = web.database(dbn='sqlite', db='testdb')
+#Trying to see if tagger loads faster in the main program file
+tagger = Popen(['java', '-cp', 'ark-tweet-nlp-0.3.jar', 'cmu.arktweetnlp.Tagger'], stdin=PIPE, stdout=PIPE)
+
+#Set up DiskStore session
+###if web.config.get('_session') is None:
+###    session = web.session.Session(
+###        app,
+###        web.session.DiskStore('session'),
+###        initializer = {
+###            'redditSort': 'hot',
+###            'prevLocation': '15239',
+###            'prevWeather': weather.Weather('15239').getWeather(),
+###            'twitterAnswer': ['defaultuser','defaultans'],
+###        }
+###    )
+###    web.config._session = session
+###else:
+###    session = web.config._session
+
+session = web.session.Session(
+    app,
+    web.session.DiskStore('sessions'),
+    initializer = {
+        'redditSort': 'hot',
+        'prevLocation': '15239',
+        'prevWeather': weather.Weather('15239').getWeather(),
+        'twitterName': 'username',
+        'twitterPhrase': 'tweet',
+        'twitterCategory': 'popular',
+    }
+)
+
+class NotFound:
+    def GET(self, arg):
+        return render.birthday()
+
+class index:
+    def GET(self):
+        i = web.input(file_too_big=False)
+        todos = db.select('todo')
+
+        #Reddit FrontPage App
+        if 'redditSort' not in session:
+            session.redditSort = 'hot'
+        fp = reddit.FrontPage(session.redditSort)
+        posts = fp.getPosts()
+
+        return render.index(todos, i.file_too_big, posts)
+
+class birthday:
+    def GET(self):
+        return render.birthday()
+
+class add:
+    def POST(self):
+        i = web.input()
+        n = db.insert('todo', title=i.title)
+        raise web.seeother('/')
+
+class remove:
+    def POST(self, ID):
+        ID = int(ID)
+        db.delete('todo', where='id = $ID', vars=locals())
+        raise web.seeother('/')
+
+class bg_add:
+    def POST(self):
+        cgi.maxlen=1024*1024*5
+        try:
+            file_ = web.webapi.rawinput().get('bgimg')
+            filename = 'static/user/bg.jpg'
+            web.debug("ALERT: File '%s' was uploaded." % file_.filename)
+            if file_.filename.endswith(".mid"):
+                filename = 'static/user/bg.mid'
+            with open(filename, 'wb') as f:
+                f.write(file_.value)
+        except ValueError:
+            raise web.seeother('/?file_too_big=True')
+        raise web.seeother('/')
+
+class reddit_frontpage:
+    def GET(self):
+        if 'redditSort' not in session:
+            session.redditSort = 'hot'
+        fp = reddit.FrontPage(sort=session.redditSort)
+        posts = fp.getPosts()
+        return render.reddit(posts)
+
+class weather_api:
+    def GET(self):
+        try:
+            observationTime = session.prevWeather['current_observation']['observation_time_rfc822']
+        except TypeError, e:
+            web.debug(e)
+            session.prevWeather = weather.Weather('15239').getWeather()
+            observationTime = session.prevWeather['current_observation']['observation_time_rfc822']
+        #Check if last request was less than 10 secs ago
+        lastUpdated = dateparser(observationTime)
+        if (datetime.now(pytz.utc) - lastUpdated) > timedelta(seconds=10): #Make new request
+            conditions = weather.Weather(session.prevLocation)
+            web.debug("Requesting Radar GIF for " + conditions.location)
+            try:
+                conditions.getRadar()
+            except weather.HTTPError:
+                pass
+            now = conditions.getWeather()
+            return render.weather(now)
+        else: #Give old data instead
+            if session.prevWeather == None:
+                session.prevWeather = weather.Weather(session.prevLocation)
+            try:
+                now = session.prevWeather 
+            except AttributeError:
+                session.prevWeather = weather.Weather(session.prevLocation)
+                now = session.prevWeather
+
+            return render.weather(now, too_fast=True)
+
+class change_location:
+    def POST(self):
+        location = str(web.input('zipcode')['zipcode'])
+        location = location.strip(' ').replace(' ', '_')
+
+        #Check if location is same as before
+        if 'prevLocation' not in session:
+            web.debug("Requesting Radar GIF for " + conditions.location)
+            session.prevLocation = '15239'
+        if location != session.prevLocation:
+            session.prevLocation = location
+        raise web.seeother('/weather')
+
+class who_said:
+    def GET(self):
+#        try:
+#            puzzle = twitter.getNounPhrases(tagger)
+#        except IOError:
+#            web.debug('ALERT: Tweet Tagger has crashed. Restarting program...')
+#            tagger = Popen(['java', '-cp', 'ark-tweet-nlp-0.3.jar', 'cmu.arktweetnlp.Tagger'], stdin=PIPE, stdout=PIPE)
+#            puzzle = twitter.getNounPhrases(tagger)
+        category = session.twitterCategory
+        puzzle = twitter.getNounPhrases(tagger, category)
+        choices = puzzle['otherChoices']
+        web.debug('Username: %s\nPhrase: %s' % (puzzle['username'], puzzle['phrases']))
+        categories = list(twitter.CELEBS.keys())
+        session.twitterName = puzzle['username']
+        session.twitterPhrase = puzzle['phrases']
+        active = session.twitterCategory
+        return render.twitter(puzzle['phrases'], choices, categories, active)
+
+class guess_tweet:
+    def GET(self):
+        phrase = web.input('tweet')
+        name = web.input('name')
+        answer = session.twitterName
+        return answer
+    def POST(self):
+        try:
+            category = web.input('category')['category']
+            web.debug(category)
+            session.twitterCategory = category
+            web.debug('Success')
+        except AttributeError:
+            session.twitterCategory = 'popular'
+            web.debug("Error... defaulting to 'popular'")
+
+if __name__ == '__main__':
+    app.run()

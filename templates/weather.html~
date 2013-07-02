@@ -1,0 +1,51 @@
+$def with(weather, too_fast=False)
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Live Weather Conditions</title>
+    <link type='text/css' rel='stylesheet' href='/static/styles/weather.css' />
+    $if 'current_observation' in weather:
+        <link type='image/gif' rel='shortcut icon' href=$weather['current_observation']['icon_url'] />
+    <script async src="http://platform.twitter.com/widgets.js" charset="utf-8"></script>
+</head>
+
+<body>
+    <div class='outerWeather'>
+        $if 'current_observation' in weather.keys(): 
+            <h4>$weather['current_observation']['observation_time']</h4>
+            <h3 id='cityName'>$weather['current_observation']['display_location']['full']</h3>
+            <p id='temp'>$weather['current_observation']['temperature_string']</p>
+            <h5>$weather['current_observation']['weather']</h5>
+            <img id='radar' src='/static/icons/radar.gif' />
+            $if 'html' in weather.keys():
+                $:weather['html'].replace('//platform', 'http://platform')
+            $if too_fast:
+                <p>(Results kept from last search)</p>
+        $elif 'error' in weather['response'].keys():
+            <h3>Request Error: <em>$weather['response']['error']['description']</em></h3>
+            <p>$weather['response']['error']['description']</p>
+        $elif 'results' in weather['response'].keys():
+            <table>
+            <th>City Not Found. Did you mean:</th>
+            $for city in weather['response']['results']
+                <tr>
+                    $if city['state'] == '':
+                        <td>$city['country_name']/$city['city']</td>
+                        <td><form method='post' action='change_location?zipcode=$city['country_name']/$city['city']'>
+                            <input type='submit' value='Go'>
+                        </form></td>
+                    $else:
+                        <td>$city['state']/$city['city']</td>
+                        <td><form method='post' action='change_location?zipcode=$city['state']/$city['city']'>
+                            <input type='submit' value='Go'>
+                        </form></td>
+                </tr>
+            </table>
+       <p>Change Your Location:</p>
+        <form method='post' action='/change_location'>
+            <input type='text' name='zipcode'>
+            <input type='submit' value='Submit'>
+        </form>
+    </div>
+</body>
+</html>
