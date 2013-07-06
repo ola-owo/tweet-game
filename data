@@ -1,0 +1,127 @@
+commit f20e8073108083fbc4ee2a1ddf10f334199f2802
+Author: Ola <technoto@gmail.com>
+Date:   Tue Jul 2 17:02:13 2013 -0400
+
+    Seriously fixed requirements
+
+:100644 100644 c2fc17a... 4e54fa1... M	requirements.txt
+
+commit b15ef1f53ee09c8db5f09b2bf64cc16397a8b5cb
+Author: Ola <technoto@gmail.com>
+Date:   Tue Jul 2 16:51:13 2013 -0400
+
+    idk
+
+:100644 100644 78c1152... 3481f60... M	.gitignore
+:100644 000000 8ec3474... 0000000... D	answer
+:100644 000000 c3ae5c4... 0000000... D	get_tweets.sh
+:000000 100644 0000000... c8883ea... A	src/pip-delete-this-directory.txt
+:000000 160000 0000000... d1f2dc2... A	src/tweepy
+:100644 100644 8b9b5e2... e69de29... M	static/user/bg.jpg
+:100644 100644 85c2706... cd41259... M	twitter.pyc
+
+commit 7f550c25d384bb3e57c114c53fe8a038ebf1688a
+Author: Ola <technoto@gmail.com>
+Date:   Tue Jul 2 13:36:24 2013 -0400
+
+    really REALLY fixed requirements
+
+:100644 100644 7e4efa1... c2fc17a... M	requirements.txt
+
+commit a349f9d350f7bf36177e724e4a678ed0c7461925
+Author: Ola <technoto@gmail.com>
+Date:   Tue Jul 2 13:23:05 2013 -0400
+
+    Oembed workaround no longer needed with Tweepy 2.1
+
+:100644 100644 739ff3a... 229b42e... M	twitter.py
+
+commit 5936c8b4614077d0e1e3d1503ac322d313e09d61
+Author: Ola <technoto@gmail.com>
+Date:   Tue Jul 2 13:15:46 2013 -0400
+
+    really fixed requirements
+
+:100644 100644 7c2bda6... 7e4efa1... M	requirements.txt
+
+commit 9f1f4ed6c718e0a20c8df1505ff4d295e3b3539e
+Author: Ola <technoto@gmail.com>
+Date:   Tue Jul 2 13:02:41 2013 -0400
+
+    Ignore backup(.py~) and compiled(.pyc) files
+
+:000000 100644 0000000... 78c1152... A	.gitignore
+
+commit 1aad8ed62c7b47be5b89459472f70ebedbcc8398
+Author: Ola <ola@ola-Lenovo.(none)>
+Date:   Tue Jul 2 12:48:20 2013 -0400
+
+    fixed requirements
+
+:100644 100644 e4045e2... 7c2bda6... M	requirements.txt
+:100644 000000 973b902... 0000000... D	sessions/37c771a27fb6d1e413bfd139d9522f178b4ba72d
+:100644 000000 9b57826... 0000000... D	sessions/5594c06a27cc6ca19b4f0967c05783c66a5c550a
+:100644 000000 694cf7e... 0000000... D	sessions/98242eb978ae3e55a98511ce902fece41af1809e
+:100644 000000 4c627da... 0000000... D	sessions/e8d4661f4ffa04136085062d209577355692d7c8
+:100644 000000 a14bf91... 0000000... D	sessions/ebc5df6d1a14ec8b0f50dc6e1efeacd88fab2dc3
+
+commit 5c17389cd3f62b685140a00afb366973f8fd9d98
+Author: Ola <ola@ola-Lenovo.(none)>
+Date:   Tue Jul 2 11:55:30 2013 -0400
+
+    init
+
+:000000 100644 0000000... ca46418... A	Procfile
+:000000 100644 0000000... 8ec3474... A	answer
+:000000 100644 0000000... 56d2fe5... A	ark-tweet-nlp-0.3.jar
+:000000 100644 0000000... f4109dd... A	celebs
+:000000 100644 0000000... c3ae5c4... A	get_tweets.sh
+:000000 100644 0000000... fc915e7... A	reddit.py
+:000000 100644 0000000... 5a9cc5b... A	reddit.pyc
+:000000 100644 0000000... e4045e2... A	requirements.txt
+:000000 100644 0000000... 973b902... A	sessions/37c771a27fb6d1e413bfd139d9522f178b4ba72d
+:000000 100644 0000000... 9b57826... A	sessions/5594c06a27cc6ca19b4f0967c05783c66a5c550a
+:000000 100644 0000000... 694cf7e... A	sessions/98242eb978ae3e55a98511ce902fece41af1809e
+:000000 100644 0000000... 4c627da... A	sessions/e8d4661f4ffa04136085062d209577355692d7c8
+:000000 100644 0000000... a14bf91... A	sessions/ebc5df6d1a14ec8b0f50dc6e1efeacd88fab2dc3
+:000000 100644 0000000... ff962e6... A	static/icons/carlton.jpg
+:000000 100644 0000000... c42e3dc... A	static/icons/colors.gif
+:000000 100644 0000000... ae90a50... A	static/icons/loader.gif
+:000000 100644 0000000... 642cac2... A	static/icons/radar.gif
+:000000 100644 0000000... d82e562... A	static/icons/reddit-alien.png
+:000000 100644 0000000... 01649d9... A	static/icons/searchbox.jpg
+:000000 100644 0000000... 8d60304... A	static/icons/weatherbg.png
+:000000 100644 0000000... 280083f... A	static/scripts/jquery-2.0.2.js
+:000000 100644 0000000... 73e5218... A	static/scripts/jquery-2.0.2.min.js
+:000000 100644 0000000... 9054232... A	static/scripts/scroll.js
+:000000 100644 0000000... 7af33d7... A	static/scripts/twitter.js
+:000000 100644 0000000... 7af33d7... A	static/scripts/twitter.js~
+:000000 100644 0000000... 3b68aeb... A	static/styles/bday.css
+:000000 100644 0000000... cedd1e0... A	static/styles/reddit.css
+:000000 100644 0000000... fe61225... A	static/styles/style.css
+:000000 100644 0000000... 3624eec... A	static/styles/twitter.css
+:000000 100644 0000000... 4e6afb2... A	static/styles/twitter.css~
+:000000 100644 0000000... 91cc4a8... A	static/styles/weather.css
+:000000 100644 0000000... 8360a06... A	static/styles/weather.css~
+:000000 100644 0000000... 5a1cb3c... A	static/user/.comments/bg.jpg.xml
+:000000 100644 0000000... 8b9b5e2... A	static/user/bg.jpg
+:000000 100644 0000000... 75e8cc9... A	static/user/bg.mid
+:000000 100644 0000000... d4cb039... A	static/user/notunusual.mid
+:000000 100644 0000000... d51ef17... A	templates/birthday.html
+:000000 100644 0000000... 5cd7957... A	templates/index.html
+:000000 100644 0000000... ea9045f... A	templates/reddit.html
+:000000 100644 0000000... 500d7ea... A	templates/twitter.html
+:000000 100644 0000000... 73839b5... A	templates/twitter.html~
+:000000 100644 0000000... 57df5a8... A	templates/weather.html
+:000000 100644 0000000... f1f9a35... A	templates/weather.html~
+:000000 100644 0000000... 8860ae4... A	testdb
+:000000 100644 0000000... c227098... A	tweets.txt
+:000000 100644 0000000... 739ff3a... A	twitter.py
+:000000 100644 0000000... 85c2706... A	twitter.pyc
+:000000 100644 0000000... 5c0fdf5... A	twitter.py~
+:000000 100644 0000000... 08015c6... A	weather.py
+:000000 100644 0000000... c407cb8... A	weather.pyc
+:000000 100644 0000000... b71b6d0... A	weather.py~
+:000000 100644 0000000... e54e08d... A	webcode.py
+:000000 100644 0000000... a3e3b81... A	webcode.pyc
+:000000 100644 0000000... 892e2aa... A	webcode.py~

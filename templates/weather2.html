@@ -1,0 +1,29 @@
+$def with(location)
+<html lang='en'>
+    <head>
+        <meta charset='utf-8'>
+        <title>Weather Revamped!</title>
+        <link type='text/css' rel='stylesheet' href='/static/styles/weather2.css'/>
+        <script type='text/javascript' src='/static/scripts/jquery-2.0.2.min.js'></script>
+        <script async type='text/javascript' src='/static/scripts/weather.js'></script>
+        <script type='text/javascript'>
+            $$(window).load(function(){
+                $$('#loader').fadeOut('slow');
+            });
+        </script>
+    </head>
+    <body>
+        <div id='main'>
+            <div id='city'></div>
+            <div id='temp'>
+                <br/>
+                <span id='low'></span>/<span id='high'></span>
+            </div>
+            <div id='suggestions' class='closed'>
+                Other Suggestions:
+                <ul></ul>
+            </div>
+        <div id='oembed'></div>
+        </div>
+    </body>
+</html>
