@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # vim: set fileencoding=latin-1
 #First attempt at a Web.py website
-import web, cgi, cPickle, pytz, sqlite3
+import web, cgi, cPickle, json, pytz, sqlite3
 from datetime import datetime, timedelta
 from dateutil.parser import parse as dateparser
 from subprocess import PIPE, Popen, STDOUT
@@ -15,6 +15,8 @@ urls = (
     '/special/?', 'birthday',
     '/reddit/?', 'reddit_frontpage',
     '/weather/?', 'weather_api',
+    '/weather2', 'weather_api2',
+    '/get_weather','get_weather',
     '/change_location', 'change_location',
     '/twitter/?', 'who_said',
     '/guess_tweet', 'guess_tweet',
@@ -158,12 +160,6 @@ class change_location:
 
 class who_said:
     def GET(self):
-#        try:
-#            puzzle = twitter.getNounPhrases(tagger)
-#        except IOError:
-#            web.debug('ALERT: Tweet Tagger has crashed. Restarting program...')
-#            tagger = Popen(['java', '-cp', 'ark-tweet-nlp-0.3.jar', 'cmu.arktweetnlp.Tagger'], stdin=PIPE, stdout=PIPE)
-#            puzzle = twitter.getNounPhrases(tagger)
         category = session.twitterCategory
         puzzle = twitter.getNounPhrases(tagger, category)
         choices = puzzle['otherChoices']
@@ -188,7 +184,22 @@ class guess_tweet:
             web.debug('Successful Category Change')
         except AttributeError:
             session.twitterCategory = 'popular'
-            web.debug("Error... defaulting to 'popular'")
+            web.debug("Webcode.py Line 192: AttributeError... defaulting to 'popular'")
+
+class get_weather:
+    def GET(self):
+        location = web.input('location')['location']
+        resp = weather.getWeather2(location)
+        return json.dumps(
+            {'conditions':resp[0], 'suggestions':resp[1]},
+            sort_keys=True,
+            indent=2,
+            separators=(',',': ')
+        )
+
+class weather_api2:
+    def GET(self):
+        return render.weather2(session.prevLocation)
 
 if __name__ == '__main__':
     app.run()

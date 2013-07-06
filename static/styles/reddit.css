@@ -26,6 +26,7 @@
 .innerReddit{
   border-top:1px solid gray;
   padding:5px;
+  opacity:inherit;
   }
 
 .innerReddit > h4{
