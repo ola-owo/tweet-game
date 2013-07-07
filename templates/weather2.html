@@ -1,4 +1,5 @@
 $def with(location)
+<!DOCTYPE html>
 <html lang='en'>
     <head>
         <meta charset='utf-8'>
@@ -16,6 +17,7 @@ $def with(location)
         <div id='main'>
             <div id='city'></div>
             <div id='temp'>
+                <span id='current_temp'></span>
                 <br/>
                 <span id='low'></span>/<span id='high'></span>
             </div>
@@ -24,6 +26,10 @@ $def with(location)
                 <ul></ul>
             </div>
         <div id='oembed'></div>
+        <form id='newLocation'>
+            Change Your Location: <input type='text' name='location'>
+            <button type='button'>Submit</button>
+        </form>
         </div>
     </body>
 </html>
