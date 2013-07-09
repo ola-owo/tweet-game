@@ -3,6 +3,13 @@
   font-family:Ubuntu, Segoe UI, sans-serif;
   }
 
+a{
+  text-decoration:none;
+  color:black;
+  }
+
+a:hover{color:#0000CC}
+
 #loader{
   position:fixed;
   left:0px;
@@ -20,6 +27,10 @@
   border-radius:4px;
   }
 
+#main *{display:none}
+
+#oembed *{display:default}
+
 #city{
   font-size:2em;
   display:inline;
@@ -29,20 +40,19 @@
   position:relative;
   }
 
-.closed{display:hidden}
+.closed + ul{display:none}
 
 #temp{
+  float:right;
+  text-align:right;
+  top:-3.5em;
   display:inline;
-  position:absolute;
-  right:0.2em;
+  position:relative;
+  right:0.1em;
   font-size:4em;
   }
 
-#high, #low{
-  font-size:0.75em;
-  }
+#temp *{font-size:42px}
 
-#high{color:red}
-
-#low{color:blue;
-  padding-left:10%}
+.high{color:red}
+.low{color:blue}

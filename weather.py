@@ -1,23 +1,32 @@
 #!/usr/bin/python
-#Implements WeatherBug API
+#Implements WeatherBug and Weather Underground APIs
+from collections import OrderedDict
 from urllib2 import urlopen, HTTPError
 from xml.etree import ElementTree as et
-import json, re
+import difflib, json, re, web
 import twitter
 
 API_KEY = 'c53b5418bcd4a631'
 BASE_URL = 'http://api.wunderground.com/api/%s/' % API_KEY
 
+def getToken():
+    c_key = 'V2Pjr6F2YFmhlc5kfrTVo61BXOUgtuX0'
+    c_secret = 'QvbAR5HhwxsncV8p'
+    access_call = 'https://thepulseapi.earthnetworks.com/oauth20/token?grant_type=client_credentials\
+&client_id=%s&client_secret=%s&' % (c_key, c_secret)
+    API_KEY2 = json.loads(urlopen(access_call).read().decode())['OAuth20']['access_token']['token']
+#Initial getToken()
 c_key = 'V2Pjr6F2YFmhlc5kfrTVo61BXOUgtuX0'
 c_secret = 'QvbAR5HhwxsncV8p'
 access_call = 'https://thepulseapi.earthnetworks.com/oauth20/token?grant_type=client_credentials\
 &client_id=%s&client_secret=%s&' % (c_key, c_secret)
 API_KEY2 = json.loads(urlopen(access_call).read().decode())['OAuth20']['access_token']['token']
-CITYCODES = []
+
 with open('citycodes.txt', 'r') as f:
+    CITYCODES = []
     for line in f.readlines():
         if not line.startswith('#'):
-            CITYCODES.append(line.split('|'))
+            CITYCODES.append(line.strip('\n').split('|'))
 
 class Weather:
     def __init__(self, location, features=['conditions'], icon_set = '/i/'):
@@ -49,37 +58,76 @@ class Weather:
 
         return data
 
-def getWeather2(q, **kwargs):
+    def getRadar(self):
+        URL = BASE_URL + 'animatedradar/animatedsatellite/q/%s.gif' % self.location
+        animation = urlopen(URL)
+        with open('static/icons/radar.gif', 'wb+') as f:
+            f.write(animation.read())
+        animation.close()
+
+def getWeather2(q, cityCode=None, **kwargs):
     '''Search with Weatherbug 'Pulse' API'''
-    if q.isdigit() and len(q)==5:
+    if cityCode:
+        #City Code given from suggestions list
+        location = 'cityCode='+cityCode
+        suggestions = None
+    elif q.isdigit() and len(q)==5:
         #Search by ZIP Code
         location = 'zipCode='+q
         suggestions = None
     else:
         #Search the intl country database
         q = q.title()
+        web.debug('Weather.py Line 69; q = \'%s\'' % q) 
         suggestions = {}
-        location = ''
-        for cityData in CITYCODES:
-            if q == cityData[1]:
-                if len(location) == 0:
-                    location = 'cityCode='+cityData[0]
-                else:
-                    suggestions[cityData[0]] = cityData[1]
-            elif q in cityData[1]:
-                suggestions[cityData[0]] = cityData[1]
+        unsorted_matches = difflib.get_close_matches(q, [city[1] for city in CITYCODES])
+        matches = list(OrderedDict.fromkeys(unsorted_matches))
+        if len(matches)==0:
+            return (None, None)
+        web.debug('Weather.py Line 72; matches= '+str(matches))
+
+        def citySearch(names):
+            match_found = False
+            match = None
+            suggs = []
+            for name in names:
+                for city in CITYCODES:
+                    if name == city[1]:
+                        if match_found:
+                            suggs.append(city)
+                        else:
+                            match = city
+                            match_found = True
+            return (match, suggs)                        
+
+        match = citySearch(matches)
+        location = 'cityCode='+match[0][0]
+        suggestions = match[1]
 
     conditions = {}
     baseURL = 'https://thepulseapi.earthnetworks.com/getLiveWeatherRSS.aspx?access_token=%s&OutputType=1' % API_KEY2
     params = [location]
-#    for key in kwargs:
-#        params.append(key + '=' + kwargs[key])
-    paramString = '&'.join(params)
-    URL = baseURL + '&' + paramString
-#    URL = baseURL
-    resp = urlopen(URL).read().decode()
+    for key in kwargs:
+        params.append(key + '=' + kwargs[key])
+    paramString = '&' + '&'.join(params)
+    URL = baseURL + paramString
+    web.debug('URL: '+URL)
     aws = '{http://www.aws.com/aws}'
-    root = et.fromstring(resp).find(aws+'ob')
+
+    #Catch random HTTP Errors
+    try:
+        resp = urlopen(URL).read().decode()
+    except HTTPError:
+        web.debug('Weather.py; HTTPError, url = \'%s\'' % URL)
+        getWeather2(q, kwargs)
+
+    #Catch expired token
+    try:
+        root = et.fromstring(resp).find(aws+'ob')
+    except et.ParseError:
+        if 'fault' in json.loads(resp).keys():
+            getToken()
+        getWeather2(q, kwargs)
 
     #City Name
     conditions['city'] = root.find(aws+'city-state').text 
@@ -100,10 +148,3 @@ def getWeather2(q, **kwargs):
     conditions['condition'] = root.find(aws+'current-condition').text
 
     return (conditions, suggestions)
-
-    def getRadar(self):
-        URL = BASE_URL + 'animatedradar/animatedsatellite/q/%s.gif' % self.location
-        animation = urlopen(URL)
-        with open('static/icons/radar.gif', 'wb+') as f:
-            f.write(animation.read())
-        animation.close()

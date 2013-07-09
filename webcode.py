@@ -188,8 +188,9 @@ class guess_tweet:
 
 class get_weather:
     def GET(self):
-        location = web.input('location')['location']
-        resp = weather.getWeather2(location)
+        loc = web.input(location='15239')
+        city = web.input(cityCode=None)
+        resp = weather.getWeather2(q=loc.location, cityCode=city.cityCode)
         return json.dumps(
             {'conditions':resp[0], 'suggestions':resp[1]},
             sort_keys=True,
