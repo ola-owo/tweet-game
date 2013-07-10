@@ -16,9 +16,10 @@ $def with(location)
   </head>
   <body>
     <div id='main'>
+      <div id='ajax'></div>
       <div id='city'></div>
       <div id='suggestions' class='closed'>
-        <a href='#'>Other Suggestions (click to open/close):</a>
+        <a href='#' class='slider'>Other Suggestions (click to open/close):</a>
         <ul></ul>
       </div>
       <div id='oembed'></div>
@@ -26,6 +27,10 @@ $def with(location)
         <span id='current_temp'></span>
         <p class='conditions'></p>
         <p class='highlow'></p>
+      </div>
+      <div id='help' class='closed'>
+        <a href='#' class='slider'>Click to see formatting help</a>
+        <ul>Write your query as either <code>CITY</code>, <code>CITY, STATE</code> or <code>CITY, COUNTRY</code>.  (Make sure to use commas correctly)</ul>
       </div>
       <form id='newLocation'>
         Change Your Location:

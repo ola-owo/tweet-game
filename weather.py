@@ -3,7 +3,7 @@
 from collections import OrderedDict
 from urllib2 import urlopen, HTTPError
 from xml.etree import ElementTree as et
-import difflib, json, re, web
+import cPickle, difflib, json, re, web
 import twitter
 
 API_KEY = 'c53b5418bcd4a631'
@@ -22,11 +22,14 @@ access_call = 'https://thepulseapi.earthnetworks.com/oauth20/token?grant_type=cl
 &client_id=%s&client_secret=%s&' % (c_key, c_secret)
 API_KEY2 = json.loads(urlopen(access_call).read().decode())['OAuth20']['access_token']['token']
 
-with open('citycodes.txt', 'r') as f:
-    CITYCODES = []
-    for line in f.readlines():
-        if not line.startswith('#'):
-            CITYCODES.append(line.strip('\n').split('|'))
+#with open('citycodes.txt', 'r') as f:
+#    CITYCODES = []
+#    for line in f.readlines():
+#        if not line.startswith('#'):
+#            CITYCODES.append(line.strip('\n').split('|'))
+with open('citydict', 'rb') as f:
+    #Loads City Code Dictionary, keyed by first letter
+    CITYCODES = cPickle.load(f)
 
 class Weather:
     def __init__(self, location, features=['conditions'], icon_set = '/i/'):
@@ -77,10 +80,20 @@ def getWeather2(q, cityCode=None, **kwargs):
         suggestions = None
     else:
         #Search the intl country database
-        q = q.title()
-        web.debug('Weather.py Line 69; q = \'%s\'' % q) 
+        # q = re.sub('[\W\d]+', '', q).title()
+        q = q.strip(' ').title()
+        REmatcher = re.compile(r'^([^,]+)(?:, *(\w+))?$')
+        REmatch = REmatcher.match(q)
+        if REmatch is None:
+            return (None, None)
+        else:
+            REmatch = REmatch.groups()
+            q = REmatch[0]
+        letter = q[0].lower()
+        web.debug('Weather.py Line 84; q = \'%s\'' % q) 
         suggestions = {}
-        unsorted_matches = difflib.get_close_matches(q, [city[1] for city in CITYCODES])
+        possible_cities = [city[1] for city in CITYCODES[letter]]
+        unsorted_matches = difflib.get_close_matches(q, possible_cities, cutoff=0.8)
         matches = list(OrderedDict.fromkeys(unsorted_matches))
         if len(matches)==0:
             return (None, None)
@@ -91,16 +104,31 @@ def getWeather2(q, cityCode=None, **kwargs):
             match = None
             suggs = []
             for name in names:
-                for city in CITYCODES:
+                for city in CITYCODES[letter]:
                     if name == city[1]:
                         if match_found:
                             suggs.append(city)
                         else:
                             match = city
                             match_found = True
-            return (match, suggs)                        
-
+            if REmatch[1] is not None:
+                allmatches = [match] + suggs
+                for i in allmatches:
+                    if i[2] == '--':
+                        #Match Countries
+                        if i[4].strip('\n') == REmatch[1].title():
+                            match = i
+                            break
+                    else:
+                        #Match States
+                        if i[2] == REmatch[1].upper():
+                            match = i
+                            break
+            return (match, suggs)        
+                
         match = citySearch(matches)
+        web.debug('Weather.py Line 130; match chosen: ')
+        web.debug(match[0])
         location = 'cityCode='+match[0][0]
         suggestions = match[1]
 
@@ -117,9 +145,10 @@ def getWeather2(q, cityCode=None, **kwargs):
     #Catch random HTTP Errors
     try:
         resp = urlopen(URL).read().decode()
-    except HTTPError:
-        web.debug('Weather.py; HTTPError, url = \'%s\'' % URL)
-        getWeather2(q, kwargs)
+    except HTTPError as e:
+        web.debug('Weather.py; HTTPError: '+e)
+        web.debug('URL = '+ URL)
+        getWeather2(q, cityCode, kwargs)
 
     #Catch expired token
     try:

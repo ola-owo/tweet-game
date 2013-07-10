@@ -20,14 +20,14 @@ a:hover{color:#0000CC}
   background:url('/static/icons/loader.gif') 50% 50% no-repeat #F9F9F9;
   }
 
+#ajax > div{display:block !important}
+
 #main{
   padding:1em;
   position:relative;
   box-shadow:0px 0px 5px 5px gray;
   border-radius:4px;
   }
-
-#main *{display:none}
 
 #oembed *{display:default}
 
@@ -40,7 +40,7 @@ a:hover{color:#0000CC}
   position:relative;
   }
 
-.closed + ul{display:none}
+.closed > *:nth-child(2){display:none}
 
 #temp{
   float:right;
@@ -56,3 +56,10 @@ a:hover{color:#0000CC}
 
 .high{color:red}
 .low{color:blue}
+
+code{
+  background-color:#D0D0D0;
+  border-radius:2px;
+  padding:2px;
+  font-family:Droid Sans Mono, Lucida Sans Console, serif;
+  }

@@ -9,10 +9,14 @@ function getWeather(query=defaultLocation, city=null){
     url: '/get_weather',
     data: cityData,
     dataType: 'json',
+    beforeSend:function(){
+      $('#ajax').html('<div><img src="/static/icons/ajax-loader.gif" alt="Loading..."/></div>');
+    },
     success: function(data){
       var suggs = data.suggestions;
       var conditions = data.conditions;
 
+      $('#ajax').empty();
       $('#main *').hide('slow');
       $('body').replaceWith($origDOM.clone(true));
       if (conditions === null){
@@ -48,16 +52,18 @@ function getWeather(query=defaultLocation, city=null){
     }
   });
 }
+var comma = /,.*,/i;
 
-$('#suggestions > a').click(function(){
-  if( $('#suggestions').attr('class') === 'closed' ){
-    $('#suggestions > ul').slideDown(1000);
-    $('#suggestions').addClass('open');
-    $('#suggestions').removeClass('closed');
+$('a.slider').click(function(){
+  var $prev = $(this).parent().closest('div');
+  if($prev.attr('class') === 'closed'){
+    $(this).next().slideDown(1000);
+    $prev.addClass('open');
+    $prev.removeClass('closed');
   }else if( $('#suggestions').attr('class') === 'open' ){
-    $('#suggestions > ul').slideUp(1000);
-    $('#suggestions').addClass('closed');
-    $('#suggestions').removeClass('open');
+    $(this).next().slideUp(1000);
+    $prev.addClass('closed');
+    $prev.removeClass('open');
   }
 });
 
@@ -68,10 +74,15 @@ $('#suggestions > ul').on('click', 'li', function(event){
 });
 
 $('#newLocation').submit(function(){
-  var value = $('input').attr('name','location').val();
-  console.log('Location change: '+value);
-  if (value.length != 0){
-    getWeather(value);
+  var textbox = $('input').attr('name','location');
+  if( comma.test(textbox.val()) ){
+    alert('You have too many commas. Check the input guidelines and try again.');
+  }else{
+    console.log('Location change: '+textbox.val());
+    if (textbox.val().length != 0){
+      getWeather(textbox.val());
+    }
+    textbox.val("");
   }
   return false;
 });
