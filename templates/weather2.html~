@@ -1,0 +1,42 @@
+$def with(location)
+<!DOCTYPE html>
+<html lang='en'>
+  <head>
+    <meta charset='utf-8'>
+    <title>Weather Revamped!</title>
+    <link type='text/css' rel='stylesheet' href='/static/styles/weather2.css'/>
+    <script type='text/javascript' src='/static/scripts/jquery-2.0.2.min.js'></script>
+    <script type='text/javascript'>var defaultLocation = '$location'</script>
+    <script async='async' type='text/javascript' src='/static/scripts/weather.js'></script>
+    <script type='text/javascript'>
+      $$(window).load(function(){
+        $$('#loader').fadeOut('slow');
+      });
+    </script>
+  </head>
+  <body>
+    <div id='main'>
+      <div id='ajax'></div>
+      <div id='city'></div>
+      <div id='suggestions' class='closed'>
+        <a href='#' class='slider'>Other Suggestions (click to open/close):</a>
+        <ul></ul>
+      </div>
+      <div id='oembed'></div>
+      <div id='temp'>
+        <span id='current_temp'></span>
+        <p class='conditions'></p>
+        <p class='highlow'></p>
+      </div>
+      <div class='help closed'>
+        <a href='#' class='slider'>Click to see formatting help</a>
+        <ul>Write your query as either <code>CITY</code>, <code>CITY, STATE</code> or <code>CITY, COUNTRY</code>.  (Make sure to use commas correctly)</ul>
+      </div>
+      <form id='newLocation'>
+        Change Your Location:
+        <input type='text' name='location'>
+        <input type='submit' value='Search'>
+      </form>
+    </div>
+  </body>
+</html>
