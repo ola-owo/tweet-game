@@ -21,13 +21,14 @@ $def with(phrase, users, categories, active)
             <div class='users'>
             $for user in users:
                 <div class='user'>
-                    <a href='#'><img class='choice' id=$user.screen_name src=$user.profile_image_url /></a>
+                    <a href='#'><img class='choice' id=$user.screen_name src=$user.profile_image_url.replace('_normal','') />
+                    </a>
                     <p class='name'>$user.name</h5>
                     <p class='username'>@$user.screen_name</h6>
                 </div>
             </div>
             <div class='categories'>
-                <h5>Different Categories</h5>
+                <h5>Categories</h5>
                 $for category in categories:
                     $if category == active:
                         <a href='#'>
