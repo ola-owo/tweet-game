@@ -114,6 +114,13 @@ class reddit_frontpage:
         fp = reddit.FrontPage(sort=session.redditSort)
         posts = fp.getPosts()
         return render.reddit(posts)
+    def POST(self):
+        sort = web.input(category='default')
+            if sort != default:
+                elif sort not in ['hot', 'new', 'top', 'controversial']:
+                    web.webapi.badrequest()
+            
+        session.redditSort = sort
 
 class weather_api:
     def GET(self):

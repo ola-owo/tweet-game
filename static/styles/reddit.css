@@ -6,7 +6,6 @@
   width:35%;
   margin-right:10px;
   margin-top:10px;
-  float:right;
   }
 
 .logo{
@@ -17,7 +16,7 @@
 
 .outerReddit{
   background-color:#DDFFFF;
-  opacity:0.6;
+  opacity:0.8;
   border:2px solid gray;
   }
 

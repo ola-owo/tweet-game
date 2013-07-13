@@ -17,10 +17,10 @@ $def with(posts)
           <a href='#'>Hot</a>
         </div>
         <div>
-          <a href='#'>New</a>
+          <a href='#'>Top</a>
         </div>
         <div>
-          <a href='#'>Top</a>
+          <a href='#'>Random</a>
         </div>
         <div>
           <a href='#'>Controversial</a>

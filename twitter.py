@@ -79,16 +79,17 @@ def getNounPhrases(tagger, category):
     cPickle.dump((user_name,taggedTweet), open('answer', 'wb+'))
     return {'username':user_name, 'phrases':taggedTweet, 'otherChoices':choices}
 
-
 if __name__ == '__main__':
-    while True:
-        print 'Type EXIT to quit this program.'
-        user = raw_input('Input Twitter Username: ')
-        if user == 'EXIT':
-            sys.exit()
-        tl = user_timeline(user,write=False)
+#    while True:
+#        print 'Type EXIT to quit this program.'
+#        user = raw_input('Input Twitter Username: ')
+    if sys.argv[1] == 'timeline':
+        user = sys.argv[2]
+#    if user == 'EXIT':
+#        sys.exit()
+        tl = user_timeline(user, write=False)
         if len(tl) == 0:
             print 'That user does not exist (or has not tweeted).'
-            continue
-        nouns = getNounPhrases()
-        print nouns, '\n'
+        else:
+            for tweet in tl:
+                print tweet, '\n'
