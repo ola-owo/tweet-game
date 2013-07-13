@@ -10,7 +10,7 @@ $def with(phrase, users, categories, active)
 if (typeof(jQuery) == "undefined") {
   var iframeBody = document.getElementsByTagName("body")[0];
   var jQuery = function (selector) { return parent.jQuery(selector, iframeBody); };
-  var $ = jQuery;
+  var $$ = jQuery;
 }
         </script>
         <script async type='text/javascript' src='/static/scripts/twitter.js'></script>

@@ -5,14 +5,7 @@ $def with(phrase, users, categories, active)
         <meta charset='utf-8'>
         <title>Who Said It? - The latest Twitter Craze!</title>
         <link type='text/css' rel='stylesheet' href='/static/styles/twitter.css' />
-<!--        <script type='text/javascript' src='/static/scripts/jquery-2.0.2.min.js'></script> -->
-        <script type='text/javascript'>
-if (typeof(jQuery) == "undefined") {
-  var iframeBody = document.getElementsByTagName("body")[0];
-  var jQuery = function (selector) { return parent.jQuery(selector, iframeBody); };
-  var $$ = jQuery;
-}
-        </script>
+        <script type='text/javascript' src='/static/scripts/jquery-2.0.2.min.js'></script>
         <script async type='text/javascript' src='/static/scripts/twitter.js'></script>
         <script type='text/javascript'>
             $$(window).load(function(){
