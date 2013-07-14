@@ -100,7 +100,7 @@ class bg_add:
             file_ = web.webapi.rawinput().get('bgimg')
             filename = 'static/user/bg.jpg'
             web.debug("ALERT: File '%s' was uploaded." % file_.filename)
-            if file_.filename.endswith(".mid"):
+            if file_.filename.lower().endswith(".mid"):
                 filename = 'static/user/bg.mid'
             with open(filename, 'wb') as f:
                 f.write(file_.value)
