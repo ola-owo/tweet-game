@@ -19,6 +19,7 @@ urls = (
     '/get_weather','get_weather',
     '/change_location', 'change_location',
     '/twitter/?', 'who_said',
+    '/twitter2/?', 'who_said2',
     '/guess_tweet', 'guess_tweet',
     '/(.*)/?', 'NotFound',
     )
@@ -114,6 +115,14 @@ class reddit_frontpage:
         fp = reddit.FrontPage(sort=session.redditSort)
         posts = fp.getPosts()
         return render.reddit(posts)
+    def POST(self):
+        sort = web.input(category='default')
+        web.debug('Sort: '+sort.category)
+        if sort != 'default':
+            if sort in ['hot', 'new', 'top', 'controversial']:
+                session.redditSort = sort.category
+            else:
+                web.webapi.badrequest()
 
 class weather_api:
     def GET(self):
@@ -169,6 +178,18 @@ class who_said:
         session.twitterPhrase = puzzle['phrases']
         active = session.twitterCategory
         return render.twitter(puzzle['phrases'], choices, categories, active)
+
+class who_said2:
+    def GET(self):
+        category = session.twitterCategory
+        puzzle = twitter.getNounPhrases(tagger, category)
+        choices = puzzle['otherChoices']
+        web.debug('Username: %s\nPhrase: %s' % (puzzle['username'], puzzle['phrases']))
+        categories = list(twitter.CELEBS.keys())
+        session.twitterName = puzzle['username']
+        session.twitterPhrase = puzzle['phrases']
+        active = session.twitterCategory
+        return render.twitter2(puzzle['phrases'], choices, categories, active)
 
 class guess_tweet:
     def GET(self):

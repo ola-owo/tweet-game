@@ -18,10 +18,10 @@ $def with(todos, file_too_big, posts)
           <a href='#'>Hot</a>
         </div>
         <div>
-          <a href='#'>Top</a>
+          <a href='#'>New</a>
         </div>
         <div>
-          <a href='#'>Random</a>
+          <a href='#'>Top</a>
         </div>
         <div>
           <a href='#'>Controversial</a>

@@ -14,20 +14,12 @@ $def with(todos, file_too_big, posts)
     <div class='outsideReddit' style='float:right'>
       <img class='logo' src='/static/icons/reddit-alien.png' align="middle" />
       <div class=categories>
-        <div>
-          <a href='#'>Hot</a>
-        </div>
-        <div>
-          <a href='#'>New</a>
-        </div>
-        <div>
-          <a href='#'>Top</a>
-        </div>
-        <div>
-          <a href='#'>Controversial</a>
-        </div>
+        $for cat in ['Hot', 'New', 'Top', 'Controversial']:
+            <div class='category'>
+              <a href='#'>$cat</a>
+            </div>
       </div>
-      <div class='outerReddit'>
+    <div class='outerReddit'>
       $for post in posts:
           <div class='innerReddit'>
           <h4><a href=$post['url']>$post['title']</a></h4>

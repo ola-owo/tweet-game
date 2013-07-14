@@ -13,18 +13,10 @@ $def with(posts)
     <div class='outsideReddit'>
       <img class='logo' src='/static/icons/reddit-alien.png' align="middle" />
       <div class=categories>
-        <div>
-          <a href='#'>Hot</a>
-        </div>
-        <div>
-          <a href='#'>Top</a>
-        </div>
-        <div>
-          <a href='#'>Random</a>
-        </div>
-        <div>
-          <a href='#'>Controversial</a>
-        </div>
+        $for cat in ['Hot', 'New', 'Top', 'Controversial']:
+            <div class='category'>
+              <a href='#'>$cat</a>
+            </div>
       </div>
 <div class='outerReddit'>
       $for post in posts:

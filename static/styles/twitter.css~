@@ -66,7 +66,7 @@ a > img{
   }
 
 .username{
-  font-size:1.3px;
+  font-size:1.3em;
   color:gray;
   }
 
