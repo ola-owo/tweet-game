@@ -68,9 +68,11 @@ class Weather:
             f.write(animation.read())
         animation.close()
 
-def getWeather2(q, cityCode=None, **kwargs):
+def getWeather2(q, cityCode=None, latitude=None, longitude=None, **kwargs):
     '''Search with Weatherbug 'Pulse' API'''
-    if cityCode:
+    if latitude and longitude:
+        location='lat=%s&long=%s' % (latitude, longitude)
+    elif cityCode:
         #City Code given from suggestions list
         location = 'cityCode='+cityCode
         suggestions = None
@@ -145,9 +147,10 @@ def getWeather2(q, cityCode=None, **kwargs):
     #Catch random HTTP Errors
     try:
         resp = urlopen(URL).read().decode()
-    except HTTPError:
-        web.debug('Weather.py; HTTPError, url = \'%s\'' % URL)
-        getWeather2(q, kwargs)
+    except HTTPError as e:
+        web.debug('Weather.py; HTTPError: '+str(e))
+        web.debug('URL = '+ URL)
+        getWeather2(q, cityCode, kwargs)
 
     #Catch expired token
     try:

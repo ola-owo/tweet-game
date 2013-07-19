@@ -27,6 +27,7 @@ a:hover{color:#0000CC}
   position:relative;
   box-shadow:0px 0px 5px 5px gray;
   border-radius:4px;
+  background-color:rgb(240, 240, 240);
   }
 
 #oembed *{display:default}
@@ -62,4 +63,17 @@ code{
   border-radius:2px;
   padding:2px;
   font-family:Droid Sans Mono, Lucida Sans Console, serif;
+  }
+
+#crosshair{
+  border-radius:40px;
+  transition: transform 0.5s;
+  /* Safari */
+  -webkit-transition: transform 0.5s;
+  }
+
+#crosshair:hover{
+  transform:rotate(180deg);
+  -ms-transform: rotate(30deg); /*IE9*/
+  -webkit-transform: rotate(30deg); /*Safari+Chrome*/
   }

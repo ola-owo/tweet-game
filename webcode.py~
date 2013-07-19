@@ -21,6 +21,7 @@ urls = (
     '/twitter/?', 'who_said',
     '/twitter2/?', 'who_said2',
     '/guess_tweet', 'guess_tweet',
+    '/test', 'test',
     '/(.*)/?', 'NotFound',
     )
 
@@ -100,7 +101,7 @@ class bg_add:
             file_ = web.webapi.rawinput().get('bgimg')
             filename = 'static/user/bg.jpg'
             web.debug("ALERT: File '%s' was uploaded." % file_.filename)
-            if file_.filename.endswith(".mid"):
+            if file_.filename.lower().endswith(".mid"):
                 filename = 'static/user/bg.mid'
             with open(filename, 'wb') as f:
                 f.write(file_.value)
@@ -116,11 +117,11 @@ class reddit_frontpage:
         posts = fp.getPosts()
         return render.reddit(posts)
     def POST(self):
-        sort = web.input(category='default')
-        web.debug('Sort: '+sort.category)
+        sort = web.input(category='default').category
+        web.debug('Sort: '+sort)
         if sort != 'default':
             if sort in ['hot', 'new', 'top', 'controversial']:
-                session.redditSort = sort.category
+                session.redditSort = sort
             else:
                 web.webapi.badrequest()
 
@@ -209,9 +210,11 @@ class guess_tweet:
 
 class get_weather:
     def GET(self):
+        lat = web.input(latutude=None)
+        long_ = web.input(longitude=None)
         loc = web.input(location='15239')
         city = web.input(cityCode=None)
-        resp = weather.getWeather2(q=loc.location, cityCode=city.cityCode)
+        resp = weather.getWeather2(q=loc.location, cityCode=city.cityCode, latitude=lat.latitude, longitude=long_.longitude)
         return json.dumps(
             {'conditions':resp[0], 'suggestions':resp[1]},
             sort_keys=True,
@@ -222,6 +225,24 @@ class get_weather:
 class weather_api2:
     def GET(self):
         return render.weather2(session.prevLocation)
+
+class test:
+    def GET(self):
+        def get_ip_number(ip_address):
+            if ip_address == 0:
+                return ''
+            ipList = ip_address.split('.')
+            for i in range(len(ipList)):
+                ipList[i] = int(ipList[i])
+            ipNum = (256 * 256 * 256 * ipList[0])+(256 * 256 * ipList[1])+(256 * ipList[2])+(ipList[3])
+            return str(ipNum)
+            
+        IP_Address = web.ctx.ip
+        IP_Number = get_ip_number(ip_address)
+        
+        print "Your IP Address: "+IP_Address
+        print "Your IP Number: "+IP_Number
+        print "Your Location: "+location
 
 if __name__ == '__main__':
     app.run()

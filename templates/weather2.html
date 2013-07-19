@@ -9,6 +9,19 @@ $def with(location)
     <script type='text/javascript'>var defaultLocation = '$location'</script>
     <script async='async' type='text/javascript' src='/static/scripts/weather.js'></script>
     <script type='text/javascript'>
+      function getLocation(){
+        var x = document.getElementById('crosshair');
+        if (navigator.geolocation){
+          navigator.geolocation.getCurrentPosition(showPosition);
+        }else{
+          console.log('Please use a less crappy browser that supports Geolocation.');
+        }
+      }
+      function showPosition(position){
+        getWeather(query=null, city=null, lat=position.coords.latitude, long=position.coords.longitude);
+      }
+    </script>
+    <script type='text/javascript'>
       $$(window).load(function(){
         $$('#loader').fadeOut('slow');
       });
@@ -37,6 +50,12 @@ $def with(location)
         <input type='text' name='location'>
         <input type='submit' value='Search'>
       </form>
+      <svg id='crosshair' height='100' width='100'
+      xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/xlink' onclick='getLocation();'>
+        <g transform='scale(0.1)'>
+          <image alt="Click here to select your current location" x='0' y='0' width='730' height='1000' xlink:href='/static/icons/crosshair.svg' />
+        </g>
+      </svg>
     </div>
   </body>
 </html>

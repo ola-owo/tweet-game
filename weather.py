@@ -68,9 +68,13 @@ class Weather:
             f.write(animation.read())
         animation.close()
 
-def getWeather2(q, cityCode=None, **kwargs):
+def getWeather2(q, cityCode=None, latitude=None, longitude=None, **kwargs):
     '''Search with Weatherbug 'Pulse' API'''
-    if cityCode:
+    if latitude and longitude:
+        #Coordinates retrieved from webpage
+        location='lat=%s&long=%s' % (latitude, longitude)
+        suggestions = None
+    elif cityCode:
         #City Code given from suggestions list
         location = 'cityCode='+cityCode
         suggestions = None
@@ -146,7 +150,7 @@ def getWeather2(q, cityCode=None, **kwargs):
     try:
         resp = urlopen(URL).read().decode()
     except HTTPError as e:
-        web.debug('Weather.py; HTTPError: '+e)
+        web.debug('Weather.py; HTTPError: '+str(e))
         web.debug('URL = '+ URL)
         getWeather2(q, cityCode, kwargs)
 

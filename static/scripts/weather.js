@@ -1,6 +1,8 @@
-function getWeather(query=defaultLocation, city=null){
-  console.log('query: '+query+'; city: '+city);
-  if(city != null){
+function getWeather(query=defaultLocation, city=null, lat=null, long=null){
+  console.log('query: '+query+'; city: '+city+'; latitude: '+lat+'; longitude: '+long);
+  if((lat != null) && (long != null)){
+    var cityData = {'latitude':lat, 'longitude':long};
+  }else if(city != null){
     var cityData = {'cityCode':city};
   }else{
     var cityData = {'location':query};
