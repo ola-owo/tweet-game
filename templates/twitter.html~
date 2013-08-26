@@ -1,18 +1,11 @@
-$def with(phrase, users, categories, active)
+$def with(phrase, users, categories)
 <!DOCTYPE html>
 <html lang='en'>
     <head>
         <meta charset='utf-8'>
         <title>Who Said It? - The latest Twitter Craze!</title>
         <link type='text/css' rel='stylesheet' href='/static/styles/twitter.css' />
-<!--        <script type='text/javascript' src='/static/scripts/jquery-2.0.2.min.js'></script> -->
-        <script type='text/javascript'>
-if (typeof(jQuery) == "undefined") {
-  var iframeBody = document.getElementsByTagName("body")[0];
-  var jQuery = function (selector) { return parent.jQuery(selector, iframeBody); };
-  var $$ = jQuery;
-}
-        </script>
+        <script type='text/javascript' src='/static/scripts/jquery-2.0.2.min.js'></script>
         <script async type='text/javascript' src='/static/scripts/twitter.js'></script>
         <script type='text/javascript'>
             $$(window).load(function(){
@@ -34,17 +27,18 @@ if (typeof(jQuery) == "undefined") {
                     <p class='username'>@$user.screen_name</h6>
                 </div>
             </div>
-            <div class='categories'>
-                <h5>Categories</h5>
+            <div class='categories' id='open'>
+                <h2>Categories</h2>
                 $for category in categories:
-                    $if category == active:
+                    $if category == session.twitterCategory:
                         <a href='#'>
-                            <span style='display: block;' class='category' name=$category id='activeCategory'>$category</span>
+                            <span style='display:block;' class='category' name=$category id='activeCategory'>$category</span>
                         </a>
                     $else:    
                         <a href='#'>
                             <span style='display: block;' class='category' name=$category>$category</span>
                         </a>
+                <img class='arrow' src='/static/icons/arrow.png' />
             </div>
             <br/>
             <div id='outerResult'>

@@ -1,4 +1,4 @@
-$def with(phrase, users, categories, active)
+$def with(phrase, users, categories)
 <!DOCTYPE html>
 <html lang='en'>
     <head>
@@ -37,7 +37,7 @@ if (typeof(jQuery) == "undefined") {
             <div class='categories'>
                 <h5>Categories</h5>
                 $for category in categories:
-                    $if category == active:
+                    $if category == session.twitterCategory:
                         <a href='#'>
                             <span style='display: block;' class='category' name=$category id='activeCategory'>$category</span>
                         </a>

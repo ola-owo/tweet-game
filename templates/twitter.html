@@ -1,4 +1,4 @@
-$def with(phrase, users, categories, active)
+$def with(phrase, users, categories)
 <!DOCTYPE html>
 <html lang='en'>
     <head>
@@ -27,17 +27,18 @@ $def with(phrase, users, categories, active)
                     <p class='username'>@$user.screen_name</h6>
                 </div>
             </div>
-            <div class='categories'>
-                <h5>Categories</h5>
+            <div class='categories' id='open'>
+                <h2>Categories</h2>
                 $for category in categories:
-                    $if category == active:
+                    $if category == session.twitterCategory:
                         <a href='#'>
-                            <span style='display: block;' class='category' name=$category id='activeCategory'>$category</span>
+                            <span style='display:block;' class='category' name=$category id='activeCategory'>$category</span>
                         </a>
                     $else:    
                         <a href='#'>
                             <span style='display: block;' class='category' name=$category>$category</span>
                         </a>
+                <img class='arrow' src='/static/icons/arrow_down.png' />
             </div>
             <br/>
             <div id='outerResult'>

@@ -1,4 +1,4 @@
-$def with(location)
+$def with()
 <!DOCTYPE html>
 <html lang='en'>
   <head>
@@ -6,7 +6,7 @@ $def with(location)
     <title>Weather Revamped!</title>
     <link type='text/css' rel='stylesheet' href='/static/styles/weather2.css'/>
     <script type='text/javascript' src='/static/scripts/jquery-2.0.2.min.js'></script>
-    <script type='text/javascript'>var defaultLocation = '$location'</script>
+    <script type='text/javascript'>var defaultLocation = '$session.prevLocation'</script>
     <script async='async' type='text/javascript' src='/static/scripts/weather.js'></script>
     <script type='text/javascript'>
       function getLocation(){

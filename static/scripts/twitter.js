@@ -35,6 +35,16 @@ $(document).ready(function(){
         });
     });
 
+    //Menu slideout
+    $('img.arrow').click(function(){
+      if($(this).parent().attr('id') === 'open'){
+        $(this).parent().attr('id', 'closed');
+      }else{
+        $(this).parent().attr('id', 'open')
+      }
+      $(this).text($(this).attr('id'));
+    });
+
     // Handle choice making
     var alreadyChose = false;
     $('.choice').click(function(){

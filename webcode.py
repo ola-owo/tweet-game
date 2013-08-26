@@ -22,48 +22,35 @@ urls = (
     '/twitter2/?', 'who_said2',
     '/guess_tweet', 'guess_tweet',
     '/test', 'test',
-    '/(.*)/?', 'NotFound',
     )
 
 web.config.debug = False
-app = web.application(urls, globals())
-render = web.template.render('templates/')
-db = web.database(dbn='sqlite', db='testdb')
-#Trying to see if tagger loads faster in the main program file
+app = web.application(urls, globals(), autoreload=True)
+#db = web.database(dbn='sqlite', db='testdb')
+#bg = web.database(dbn='sqlite', db='bg')
+db = web.database(dbn='postgres', db='dd98ma04le409a', user='vifuajdgnexzum', pw='iHLZDN722mIGeqRHlGlwWSBTSM', host='ec2-54-221-240-24.compute-1.amazonaws.com', port='5432')
 tagger = Popen(['java', '-cp', 'ark-tweet-nlp-0.3.jar', 'cmu.arktweetnlp.Tagger'], stdin=PIPE, stdout=PIPE)
+if web.config.get('_session') is None:
+    session = web.session.Session(app, web.session.DiskStore('sessions'),
+        initializer = {
+            'redditSort': 'hot',
+            'prevLocation': '15239',
+            'prevWeather': weather.Weather('15239').getWeather(),
+            'twitterName': 'username',
+            'twitterPhrase': 'tweet',
+            'twitterCategory': 'popular',
+        }
+    )
+    web.config._session = session
+else:
+    session = web.config._session
 
-#Set up DiskStore session
-###if web.config.get('_session') is None:
-###    session = web.session.Session(
-###        app,
-###        web.session.DiskStore('session'),
-###        initializer = {
-###            'redditSort': 'hot',
-###            'prevLocation': '15239',
-###            'prevWeather': weather.Weather('15239').getWeather(),
-###            'twitterAnswer': ['defaultuser','defaultans'],
-###        }
-###    )
-###    web.config._session = session
-###else:
-###    session = web.config._session
+render = web.template.render('templates/', globals={'session':session})
 
-session = web.session.Session(
-    app,
-    web.session.DiskStore('sessions'),
-    initializer = {
-        'redditSort': 'hot',
-        'prevLocation': '15239',
-        'prevWeather': weather.Weather('15239').getWeather(),
-        'twitterName': 'username',
-        'twitterPhrase': 'tweet',
-        'twitterCategory': 'popular',
-    }
-)
-
-class NotFound:
-    def GET(self, arg):
-        return render.birthday()
+def notfound():
+    web.ctx.status = '404 File Not Found'
+    return web.notfound(render.notfound())
+app.notfound = notfound
 
 class index:
     def GET(self):
@@ -75,6 +62,16 @@ class index:
             session.redditSort = 'hot'
         fp = reddit.FrontPage(session.redditSort)
         posts = fp.getPosts()
+
+        #Read background media from DB
+        midIter = db.select('bg', what='data', where="dataType='midi'")
+        mid = midIter.list()[0]['data']
+        imgIter = db.select('bg', what='data', where="dataType='jpg'")
+        img = imgIter.list()[0]['data']
+        with open('static/user/bg.jpg', 'wb') as f:
+            f.write(img)
+        with open('static/user/bg.mid', 'wb') as f:
+            f.write(mid)
 
         return render.index(todos, i.file_too_big, posts)
 
@@ -99,12 +96,13 @@ class bg_add:
         cgi.maxlen=1024*1024*5
         try:
             file_ = web.webapi.rawinput().get('bgimg')
-            filename = 'static/user/bg.jpg'
             web.debug("ALERT: File '%s' was uploaded." % file_.filename)
-            if file_.filename.lower().endswith(".mid"):
+            if file_.filename.lower().endswith(".jpg"):
+                filename = 'static/user/bg.jpg'
+                db.update('bg', where="dataType='jpg'", data=buffer(file_))
+            else:
                 filename = 'static/user/bg.mid'
-            with open(filename, 'wb') as f:
-                f.write(file_.value)
+                db.update('bg', where="dataType='mid'", data=buffer(file_))
         except ValueError:
             raise web.seeother('/?file_too_big=True')
         raise web.seeother('/')
@@ -123,10 +121,11 @@ class reddit_frontpage:
             if sort in ['hot', 'new', 'top', 'controversial']:
                 session.redditSort = sort
             else:
-                web.webapi.badrequest()
+                raise web.webapi.badrequest()
 
 class weather_api:
     def GET(self):
+        web.debug(session.keys())
         try:
             observationTime = session.prevWeather['current_observation']['observation_time_rfc822']
         except TypeError, e:
@@ -175,10 +174,10 @@ class who_said:
         choices = puzzle['otherChoices']
         web.debug('Username: %s\nPhrase: %s' % (puzzle['username'], puzzle['phrases']))
         categories = list(twitter.CELEBS.keys())
-        session.twitterName = puzzle['username']
-        session.twitterPhrase = puzzle['phrases']
-        active = session.twitterCategory
-        return render.twitter(puzzle['phrases'], choices, categories, active)
+        session.twitterName = puzzle['username'].decode('utf-8')
+        session.twitterPhrase = puzzle['phrases'].decode('utf-8')
+        # active = session.twitterCategory
+        return render.twitter(puzzle['phrases'], choices, categories)
 
 class who_said2:
     def GET(self):
@@ -189,20 +188,25 @@ class who_said2:
         categories = list(twitter.CELEBS.keys())
         session.twitterName = puzzle['username']
         session.twitterPhrase = puzzle['phrases']
-        active = session.twitterCategory
-        return render.twitter2(puzzle['phrases'], choices, categories, active)
+        # active = session.twitterCategory
+        return render.twitter2(puzzle['phrases'], choices, categories)
 
 class guess_tweet:
     def GET(self):
         phrase = web.input('tweet')
         name = web.input('name')
-        answer = session.twitterName
-        return answer
+        if phrase['tweet'] == session.twitterPhrase:
+            answer = session.twitterName
+            return answer
+        else:
+            web.debug('Guess: %s | Session: %s' % (name['name'], session.twitterName, ))
+            web.debug('Guess: %s | Session: %s' % (phrase['tweet'], session.twitterPhrase))
+            return "Sorry, I cannot find your puzzle answer."
     def POST(self):
         try:
-            category = web.input('category')['category']
-            web.debug(category)
-            session.twitterCategory = category
+            category = web.input('category')
+            web.debug(category['category'])
+            session.twitterCategory = category['category']
             web.debug('Successful Category Change')
         except AttributeError:
             session.twitterCategory = 'popular'
@@ -224,7 +228,7 @@ class get_weather:
 
 class weather_api2:
     def GET(self):
-        return render.weather2(session.prevLocation)
+        return render.weather2()
 
 class test:
     def GET(self):
