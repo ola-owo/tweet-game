@@ -49,7 +49,7 @@ render = web.template.render('templates/', globals={'session':session})
 
 def notfound():
     web.ctx.status = '404 File Not Found'
-    return web.notfound(render.notfound())
+    return web.notfound(render.error("404 - Page Not Found!"))
 app.notfound = notfound
 
 class index:
