@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # vim: set fileencoding=latin-1
-import cPickle, random, sys, time, tweepy, types, web
+import cPickle, os, random, sys, time, tweepy, types, web
 from subprocess import PIPE, Popen, STDOUT
 from threading import Lock
 import pytz

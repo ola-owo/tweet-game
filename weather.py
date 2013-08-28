@@ -3,7 +3,7 @@
 from collections import OrderedDict
 from urllib2 import urlopen, HTTPError
 from xml.etree import ElementTree as et
-import cPickle, difflib, json, re, web
+import cPickle, difflib, json, os, re, web
 import twitter
 
 #Secret Variables
