@@ -6,12 +6,16 @@ from xml.etree import ElementTree as et
 import cPickle, difflib, json, re, web
 import twitter
 
-API_KEY = 'c53b5418bcd4a631'
+#Secret Variables
+API_KEY = os.environ['WUNDERGROUND_KEY']
+WXBUG_KEY = os.environ['WXBUG_KEY']
+WXBUG_SECRET = os.environ['WXBUG_SECRET']
+
 BASE_URL = 'http://api.wunderground.com/api/%s/' % API_KEY
 
 def getToken():
-    c_key = 'V2Pjr6F2YFmhlc5kfrTVo61BXOUgtuX0'
-    c_secret = 'QvbAR5HhwxsncV8p'
+    c_key = WXBUG_KEY
+    c_secret = WXBUG_SECRET
     access_call = 'https://thepulseapi.earthnetworks.com/oauth20/token?grant_type=client_credentials\
 &client_id=%s&client_secret=%s&' % (c_key, c_secret)
     API_KEY2 = json.loads(urlopen(access_call).read().decode())['OAuth20']['access_token']['token']

@@ -4,3 +4,4 @@
 *.html~
 heroku.log
 sessions/*
+secrets.env

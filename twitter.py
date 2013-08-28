@@ -6,12 +6,18 @@ from threading import Lock
 import pytz
 now = pytz.datetime.datetime.now
 
+#Secret Variables
+TWITTER_ACCESS_KEY = os.environ['TWITTER_ACCESS_KEY']
+TWITTER_ACCESS_SECRET = os.environ['TWITTER_ACCESS_SECRET']
+TWITTER_CONS_KEY = os.environ['TWITTER_CONS_KEY']
+TWITTER_CONS_SECRET = os.environ['TWITTER_CONS_SECRET']
+
 #Connect with OAuth
-consumer_key = 'zCKf6pW0yjhthedkNmQg'
-consumer_secret = 'MQn2mopByxe33F8vbW8CG75Wa1LCxVUHlf9Z07zo'
+consumer_key = TWITTER_CONS_KEY
+consumer_secret = TWITTER_CONS_SECRET
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
-access_key = '712694562-YxZ8DHMXJw0TGz5ZxqQFV0oO3G0tIFeJNMTyzEOX'
-access_secret = 'bmKnPpCud19bp4ePKjnEG24E8eTb41KSFtWT6Oino'
+access_key = TWITTER_ACCESS_KEY
+access_secret = TWITTER_ACCESS_SECRET
 api = auth.set_access_token(access_key, access_secret)
 api = tweepy.API(auth)
 

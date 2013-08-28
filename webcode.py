@@ -1,11 +1,15 @@
 #!/usr/bin/python
 # vim: set fileencoding=latin-1
 #First attempt at a Web.py website
-import web, cgi, cPickle, json, pytz, sqlite3
+import web, cgi, cPickle, json, os, pytz, sqlite3
 from datetime import datetime, timedelta
 from dateutil.parser import parse as dateparser
 from subprocess import PIPE, Popen, STDOUT
 import reddit, weather, twitter
+
+#Secret Variables
+S3_USER = os.environ['S3_USER']
+S3_PASS = os.environ['S3_PASS']
 
 urls = (
     '/', 'index',
@@ -28,8 +32,7 @@ web.config.debug = False
 app = web.application(urls, globals(), autoreload=True)
 #db = web.database(dbn='sqlite', db='testdb')
 #bg = web.database(dbn='sqlite', db='bg')
-db = web.database(dbn='postgres', db='dd98ma04le409a', user='vifuajdgnexzum', pw='iHLZDN722mIGeqRHlGlwWSBTSM', host='ec2-54-221-240-24.compute-1.amazonaws.com', port='5432')
-tagger = Popen(['java', '-cp', 'ark-tweet-nlp-0.3.jar', 'cmu.arktweetnlp.Tagger'], stdin=PIPE, stdout=PIPE)
+db = web.database(dbn='postgres', db='dd98ma04le409a', user=S3_USER, pw=S3_PASS, host='ec2-54-221-240-24.compute-1.amazonaws.com', port='5432')
 if web.config.get('_session') is None:
     session = web.session.Session(app, web.session.DiskStore('sessions'),
         initializer = {
