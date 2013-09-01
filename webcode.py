@@ -99,12 +99,14 @@ class bg_add:
         try:
             file_ = web.webapi.rawinput().get('bgimg')
             web.debug("ALERT: File '%s' was uploaded." % file_.filename)
-            if file_.filename.lower().endswith(".jpg"):
+            web.debug(buffer(file_.value))
+            web.debug(file_.type)
+            if file_.type.startswith("image/"):
                 filename = 'static/user/bg.jpg'
-                db.update('bg', where="dataType='jpg'", data=buffer(file_))
+                db.update('bg', where="dataType='jpg'", data=buffer(file_.value))
             else:
                 filename = 'static/user/bg.mid'
-                db.update('bg', where="dataType='mid'", data=buffer(file_))
+                db.update('bg', where="dataType='mid'", data=buffer(file_.value))
         except ValueError:
             raise web.seeother('/?file_too_big=True')
         raise web.seeother('/')
