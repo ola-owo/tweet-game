@@ -45,7 +45,9 @@ img.arrow{
   height:24px;
   width:50px;
   opacity:0.5;
-  transition:transform 0.25s opacity 1s;
+  transition:transform 0.25s opacity 1.5s;
+  cursor:pointer;
+  -webkit-filter
   }
 img.arrow:hover{opacity:1}
 

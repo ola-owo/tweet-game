@@ -48,6 +48,7 @@ else:
     session = web.config._session
 
 render = web.template.render('templates/', globals={'session':session})
+title = reddit.worstPost()
 
 def notfound():
     web.ctx.status = '404 File Not Found'
@@ -75,7 +76,7 @@ class index:
         with open('static/user/bg.mid', 'wb') as f:
             f.write(mid)
 
-        return render.index(todos, i.file_too_big, posts)
+        return render.index(title, todos, i.file_too_big, posts)
 
 class birthday:
     def GET(self):
