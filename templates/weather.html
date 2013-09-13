@@ -16,7 +16,7 @@ $def with(weather, too_fast=False)
             <h3 id='cityName'>$weather['current_observation']['display_location']['full']</h3>
             <p id='temp'>$weather['current_observation']['temperature_string']</p>
             <h5>$weather['current_observation']['weather']</h5>
-            <img id='radar' src='/static/icons/radar.gif' />
+            <img id='radar' src='/static/img/radar.gif' />
             $if weather['html'] != None:
                 $:weather['html'].replace('//platform', 'http://platform')
             $if too_fast:

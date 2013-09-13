@@ -1,19 +1,21 @@
 $def with(phrase, users, categories)
-<!DOCTYPE html>
+$var css:twitter.css
+$var js:twitter.js
+<!-- <!DOCTYPE html>
 <html lang='en'>
     <head>
         <meta charset='utf-8'>
         <title>Who Said It? - The latest Twitter Craze!</title>
         <link type='text/css' rel='stylesheet' href='/static/styles/twitter.css' />
         <script type='text/javascript' src='/static/scripts/jquery-2.0.2.min.js'></script>
-        <script async type='text/javascript' src='/static/scripts/twitter.js'></script>
+        <script async type='text/javascript' src='/static/scripts/twitter.js'></script> -->
         <script type='text/javascript'>
             $$(window).load(function(){
                 $$('#loader').fadeOut('slow');
             });
         </script>
-    </head>
-    <body>
+<!--    </head>
+    <body> -->
         <div id='loader'></div>
         <h1>Who said:</h1>
         <blockquote>$phrase</blockquote>
@@ -38,7 +40,7 @@ $def with(phrase, users, categories)
                         <a href='#'>
                             <span style='display: block;' class='category' name=$category>$category</span>
                         </a>
-                <img class='arrow' src='/static/icons/arrow_down.png' />
+                <img class='arrow' src='/static/img/arrow_down.png' />
             </div>
             <br/>
             <div id='outerResult'>
@@ -47,6 +49,6 @@ $def with(phrase, users, categories)
                     <span style='display: block;' id='tryAgain'>Try Again</span>
                 </a>
             </div>
-        </body>
-    </html>
+<!--         </body>
+    </html> -->
 

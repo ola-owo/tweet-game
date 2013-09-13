@@ -1,5 +1,7 @@
 $def with(posts)
-<!DOCTYPE html>
+$var css:reddit.css
+$var js:reddit.js
+<!-- <!DOCTYPE html>
 <html lang='en'>
   <head>
     <meta charset='utf-8'>
@@ -9,9 +11,9 @@ $def with(posts)
     <script async type='text/javascript' src='/static/scripts/reddit.js'></script>
   </head>
 
-  <body>
+  <body> -->
     <div class='outsideReddit'>
-      <img class='logo' src='/static/icons/reddit-alien.png' align="middle" />
+      <img class='logo' src='/static/img/reddit-alien.png' align="middle" />
       <div class=categories>
         $for cat in ['Hot', 'New', 'Top', 'Controversial']:
             <div class='category'>
@@ -27,5 +29,5 @@ $def with(posts)
           </div>
       </div>
     </div>
-  </body>
-</html>
+<!--  </body>
+</html> -->

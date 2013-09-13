@@ -9,6 +9,8 @@ def parse(url):
     try:
         r = urlopen(url).read().decode()
         data = json.loads(r)
+        if data is None:
+            parse(url)
         return data
 
     except HTTPError:
@@ -18,11 +20,15 @@ def parse(url):
 def worstPost():
     url = API_BASE + '/r/all/top.json?t=all&before=t3_14ymyf&t=day&limit=1'
     data = parse(url)
-    title = data['data']['children'][0]['data']['title']
-    return title
-    
+    try:
+        title = data['data']['children'][0]['data']['title']
+        return title
+    except TypeError:
+        worstPost()
+
 def bestPost():
-    pass
+    fp = FrontPage('top', limit=1)
+    return fp.getPosts()[0]['title']
 
 class FrontPage(object):
     def __init__(self, sort='hot', limit=25):

@@ -4,6 +4,7 @@
 import web, cgi, cPickle, json, os, pytz, sqlite3
 from datetime import datetime, timedelta
 from dateutil.parser import parse as dateparser
+from random import randint
 from subprocess import PIPE, Popen, STDOUT
 import reddit, weather, twitter
 
@@ -27,7 +28,6 @@ urls = (
     '/guess_tweet', 'guess_tweet',
     '/test', 'test',
     )
-
 web.config.debug = False
 app = web.application(urls, globals(), autoreload=True)
 db = web.database(dbn='postgres', db='dd98ma04le409a', user=S3_USER, pw=S3_PASS, host='ec2-54-221-240-24.compute-1.amazonaws.com', port='5432')
@@ -47,12 +47,27 @@ if web.config.get('_session') is None:
 else:
     session = web.config._session
 
-render = web.template.render('templates/', globals={'session':session})
-title = reddit.worstPost()
+render = web.template.render('templates/', base='base', globals={'session':session})
+render_plain = web.template.render('templates/', globals={'session':session})
+
+#Get current best/worst reddit post
+if randint(0,1) == 0:
+    redditRating = 'worst'
+else:
+    redditRating = 'best'
+try:
+    if redditRating == 'worst':
+        redditPost = reddit.worstPost()
+    else:
+        redditPost = reddit.bestPost()
+    db.update('reddit', where="rating='%s'"%redditRating, post=redditPost)
+except TypeError:
+    redditPostIter = db.select('reddit', what='post', where="rating='%s'"%redditRating)
+    redditPost = redditPostIter.list()[0]['post']
 
 def notfound():
     web.ctx.status = '404 File Not Found'
-    return web.notfound(render.error("404 - Page Not Found!"))
+    return web.notfound(render_plain.error("404 - Page Not Found!"))
 app.notfound = notfound
 
 class index:
@@ -76,11 +91,11 @@ class index:
         with open('static/user/bg.mid', 'wb') as f:
             f.write(mid)
 
-        return render.index(title, todos, i.file_too_big, posts)
+        return render.index(redditPost, todos, i.file_too_big, posts)
 
 class birthday:
     def GET(self):
-        return render.birthday()
+        return render_plain.birthday()
 
 class add:
     def POST(self):
@@ -147,7 +162,7 @@ class weather_api:
             except weather.HTTPError:
                 pass
             now = conditions.getWeather()
-            return render.weather(now)
+            return render_plain.weather(now)
         else: #Give old data instead
             if session.prevWeather == None:
                 session.prevWeather = weather.Weather(session.prevLocation)
@@ -157,7 +172,7 @@ class weather_api:
                 session.prevWeather = weather.Weather(session.prevLocation)
                 now = session.prevWeather
 
-            return render.weather(now, too_fast=True)
+            return render_plain.weather(now, too_fast=True)
 
 class change_location:
     def POST(self):
@@ -233,7 +248,7 @@ class get_weather:
 
 class weather_api2:
     def GET(self):
-        return render.weather2()
+        return render_plain.weather2()
 
 class test:
     def GET(self):
