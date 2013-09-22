@@ -162,7 +162,7 @@ class weather_api:
             except weather.HTTPError:
                 pass
             now = conditions.getWeather()
-            return render_plain.weather(now)
+            return render.weather(now)
         else: #Give old data instead
             if session.prevWeather == None:
                 session.prevWeather = weather.Weather(session.prevLocation)
@@ -172,7 +172,7 @@ class weather_api:
                 session.prevWeather = weather.Weather(session.prevLocation)
                 now = session.prevWeather
 
-            return render_plain.weather(now, too_fast=True)
+            return render.weather(now, too_fast=True)
 
 class change_location:
     def POST(self):

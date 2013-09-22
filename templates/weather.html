@@ -1,15 +1,17 @@
 $def with(weather, too_fast=False)
-<!DOCTYPE html>
+$var title:Live Weather Conditions
+$var css:weather.css
+<!-- <!DOCTYPE html>
 <html>
 <head>
     <title>Live Weather Conditions</title>
-    <link type='text/css' rel='stylesheet' href='/static/styles/weather.css' />
+    <link type='text/css' rel='stylesheet' href='/static/css/weather.css' />
     $if 'current_observation' in weather:
         <link type='image/gif' rel='shortcut icon' href=$weather['current_observation']['icon_url'] />
     <script async src="http://platform.twitter.com/widgets.js" charset="utf-8"></script>
 </head>
 
-<body>
+<body> -->
     <div class='outerWeather'>
         $if 'current_observation' in weather.keys(): 
             <h4>$weather['current_observation']['observation_time']</h4>
@@ -47,5 +49,5 @@ $def with(weather, too_fast=False)
             <input type='submit' value='Submit'>
         </form>
     </div>
-</body>
-</html>
+<!-- </body>
+</html> -->
