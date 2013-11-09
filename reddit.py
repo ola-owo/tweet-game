@@ -1,14 +1,14 @@
 #!/usr/bin/python
-from urllib2 import urlopen, HTTPError, build_opener
+from urllib2 import Request, urlopen, HTTPError, build_opener
 import time, json
 
-o = build_opener()
-o.addheaders = [('User-agent', 'Python bot by ooowo')]
+headers = {'User-Agent':'Python parser by ooowo'}
 API_BASE = 'http://api.reddit.com'
 def parse(url):
     try:
-        r = urlopen(url).read().decode()
-        data = json.loads(r)
+        req = Request(url, None, headers)
+        resp = urlopen(req).read().decode()
+        data = json.loads(resp)
         if data is None:
             parse(url)
         return data

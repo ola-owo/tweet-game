@@ -47,8 +47,9 @@ if web.config.get('_session') is None:
 else:
     session = web.config._session
 
-render = web.template.render('templates/', base='base', globals={'session':session})
-render_plain = web.template.render('templates/', globals={'session':session})
+render = web.template.render('templates/', globals={'session':session})
+#render = web.template.render('templates/', base='base', globals={'session':session})
+#render_plain = web.template.render('templates/', globals={'session':session})
 
 #Get current best/worst reddit post
 if randint(0,1) == 0:
@@ -67,7 +68,7 @@ except TypeError:
 
 def notfound():
     web.ctx.status = '404 File Not Found'
-    return web.notfound(render_plain.error("404 - Page Not Found!"))
+    return web.notfound(render.error("404 - Page Not Found!"))
 app.notfound = notfound
 
 class index:
@@ -95,7 +96,7 @@ class index:
 
 class birthday:
     def GET(self):
-        return render_plain.birthday()
+        return render.birthday()
 
 class add:
     def POST(self):
@@ -248,7 +249,7 @@ class get_weather:
 
 class weather_api2:
     def GET(self):
-        return render_plain.weather2()
+        return render.weather2()
 
 class test:
     def GET(self):

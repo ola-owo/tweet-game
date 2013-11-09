@@ -68,7 +68,7 @@ class Weather:
     def getRadar(self):
         URL = BASE_URL + 'animatedradar/animatedsatellite/q/%s.gif' % self.location
         animation = urlopen(URL)
-        with open('static/icons/radar.gif', 'wb+') as f:
+        with open('static/img/radar.gif', 'wb+') as f:
             f.write(animation.read())
         animation.close()
 
