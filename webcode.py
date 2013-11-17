@@ -47,9 +47,8 @@ if web.config.get('_session') is None:
 else:
     session = web.config._session
 
+render_base = web.template.render('templates/', base='base', globals={'session':session})
 render = web.template.render('templates/', globals={'session':session})
-#render = web.template.render('templates/', base='base', globals={'session':session})
-#render_plain = web.template.render('templates/', globals={'session':session})
 
 #Get current best/worst reddit post
 if randint(0,1) == 0:
