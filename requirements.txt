@@ -1,4 +1,4 @@
-Crypto==2.6
+pycrypto==2.6
 psycopg2==2.5
 python-dateutil==2.1
 pytz==2013b
