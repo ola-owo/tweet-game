@@ -1,7 +1,6 @@
 *.py~
 *.pyc
 *.swp
-*.html~
 heroku.log
 sessions/*
 secrets.env

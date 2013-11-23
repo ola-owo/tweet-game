@@ -14,6 +14,7 @@ S3_PASS = os.environ['S3_PASS']
 
 urls = (
     '/', 'index',
+    '/favicon.ico/?', 'favicon',
     '/add', 'add',
     '/remove/(\d+)', 'remove',
     '/bg_add', 'bg_add',
@@ -70,6 +71,12 @@ def notfound():
     return web.notfound(render.error("404 - Page Not Found!"))
 app.notfound = notfound
 
+class favicon:
+    def GET(self):
+        web.header('Content-Type', 'gif')
+        with open('static/img/colors.gif','rb') as f:
+            return f.read()
+
 class index:
     def GET(self):
         i = web.input(file_too_big=False)
@@ -114,17 +121,17 @@ class bg_add:
         cgi.maxlen=1024*1024*5
         try:
             file_ = web.webapi.rawinput().get('bgimg')
-            web.debug("ALERT: File '%s' was uploaded." % file_.filename)
-            web.debug(buffer(file_.value))
-            web.debug(file_.type)
-            if file_.type.startswith("image/"):
-                filename = 'static/user/bg.jpg'
-                db.update('bg', where="dataType='jpg'", data=buffer(file_.value))
-            else:
-                filename = 'static/user/bg.mid'
-                db.update('bg', where="dataType='mid'", data=buffer(file_.value))
         except ValueError:
             raise web.seeother('/?file_too_big=True')
+        web.debug("ALERT: File '%s' was uploaded." % file_.filename)
+        web.debug(buffer(file_.value))
+        web.debug(file_.type)
+        if file_.type.startswith('image/'):
+            filename = 'static/user/bg.jpg'
+            db.update('bg', where="datatype='jpg'", data=buffer(file_.value))
+        else:
+            filename = 'static/user/bg.mid'
+            db.update('bg', where="datatype='midi'", data=buffer(file_.value))
         raise web.seeother('/')
 
 class reddit_frontpage:
