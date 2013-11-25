@@ -74,7 +74,7 @@ app.notfound = notfound
 class favicon:
     def GET(self):
         web.header('Content-Type', 'gif')
-        with open('/static/img/colors.gif','rb') as f:
+        with open('static/img/colors.gif','rb') as f:
             return f.read()
 
 class index:
@@ -93,7 +93,7 @@ class index:
         mid = midIter.list()[0]['data']
         imgIter = db.select('bg', what='data', where="dataType='jpg'")
         img = imgIter.list()[0]['data']
-        with open('/static/user/bg.jpg', 'wb') as f:
+        with open('static/user/bg.jpg', 'wb') as f:
             f.write(img)
         with open('static/user/bg.mid', 'wb') as f:
             f.write(mid)
