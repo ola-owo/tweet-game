@@ -201,7 +201,7 @@ class who_said:
         choices = puzzle['otherChoices']
         web.debug('Username: %s\nPhrase: %s' % (puzzle['username'], puzzle['phrases']))
         categories = list(twitter.CELEBS.keys())
-        session.twitterName = puzzle['username'].decode('utf-8')
+        session.twitterName = puzzle['username'].decode('utf-8').lower()
         session.twitterPhrase = puzzle['phrases'].decode('utf-8')
         # active = session.twitterCategory
         return render.twitter(puzzle['phrases'], choices, categories)
@@ -213,7 +213,7 @@ class who_said2:
         choices = puzzle['otherChoices']
         web.debug('Username: %s\nPhrase: %s' % (puzzle['username'], puzzle['phrases']))
         categories = list(twitter.CELEBS.keys())
-        session.twitterName = puzzle['username']
+        session.twitterName = puzzle['username'].lower()
         session.twitterPhrase = puzzle['phrases']
         # active = session.twitterCategory
         return render.twitter2(puzzle['phrases'], choices, categories)

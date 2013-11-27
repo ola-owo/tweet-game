@@ -61,7 +61,7 @@ $(document).ready(function(){
         data: {name:guess, tweet:phrase},
         dataType: 'text',
         success: function(ans){
-          if(ans === guess){
+          if(ans.toUpperCase() === guess.toUpperCase()){
             $result.css({
               'background-color': '#009933',
               'border-top': '2px solid #006600',
