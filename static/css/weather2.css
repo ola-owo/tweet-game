@@ -1,0 +1,84 @@
+@import url(http://fonts.googleapis.com/css?family=Share+Tech);
+*{
+  font-size:24px;
+  font-family:Ubuntu, Segoe UI, sans-serif;
+  }
+
+a{
+  text-decoration:none;
+  color:black;
+  }
+
+a:hover{color:#0000CC}
+
+#loader{
+  position:fixed;
+  left:0px;
+  top:0px;
+  width:100%;
+  height:100%;
+  z-index:9999;
+  background:url('/static/icons/loader.gif') 50% 50% no-repeat #F9F9F9;
+  }
+
+#ajax > div{display:block !important}
+
+#main{
+  padding:1em;
+  position:relative;
+  box-shadow:0px 0px 5px 5px gray;
+  border-radius:4px;
+  background-color:rgb(240, 240, 240);
+  }
+
+#oembed *{display:default}
+
+#city{
+  font-size:2em;
+  display:inline;
+  }
+
+#suggestions > ul{
+  position:relative;
+  }
+
+.closed > *:nth-child(2){display:none}
+
+#temp{
+  float:right;
+  text-align:right;
+  top:-3.5em;
+  display:inline;
+  position:relative;
+  right:0.1em;
+  font-size:4em;
+  }
+
+#temp *{font-size:42px}
+
+.high{color:red}
+.low{color:blue}
+
+#help{width:50%}
+code{
+  background-color:#AAA;
+  padding:5px;
+  font-family:Share Tech, Droid Sans Mono, Lucida Sans Console, sans-serif;
+  color:white;
+  letter-spacing:1px;
+  box-shadow:0 0 5px #AAA;
+  }
+
+#crosshair{
+  cursor:pointer;
+  border-radius:40px;
+  transition: transform 0.5s;
+  /* Safari */
+  -webkit-transition: transform 0.5s;
+  }
+
+#crosshair:hover{
+  transform:rotate(180deg);
+  -ms-transform: rotate(30deg); /*IE9*/
+  -webkit-transform: rotate(30deg); /*Safari+Chrome*/
+  }

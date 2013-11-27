@@ -1,0 +1,19 @@
+$def with(content)
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset='utf-8'>
+  <title>$content.title</title>
+  <link type='image/gif' rel='shortcut icon' href='/static/img/colors.gif' />
+  <script type='text/javascript' src='/static/js/jquery-2.0.2.min.js'></script>
+  $if content.js is not None:
+      $for f in content.js.split():
+          <script type='text/javascript' src='/static/js/$f'></script>
+  $if content.css is not None:
+      $for f in content.css.split():
+          <link rel='stylesheet' type='text/css' href='/static/css/$f' media='screen' />
+</head>
+<body>
+$:content
+</body>
+</html>

@@ -1,0 +1,19 @@
+$def with(description)
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <title>You Broke my Website!</title>
+    <link type='text/css' rel='stylesheet' href='/static/css/bday.css' />
+    <link type='image/gif' rel='shortcut icon' href='/static/img/colors.gif' />
+    <script async type="text/javascript" src='/static/js/scroll.js' ></script> 
+  </head>
+  <body>
+    <embed class='bgmusic' src="/static/user/notunusual.mid" loop='true'>
+    <div id='x-axis'>
+      <div id='marquee' onclick='toggleMarquee(); return false;' title="Click to stop/start Marquee"> 
+        <div id='innerMarquee'><h1>$description</h1></div>
+      </div>
+    </div>
+  </body>
+</html>

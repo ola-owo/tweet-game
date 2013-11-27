@@ -1,0 +1,57 @@
+$def with(phrase, users, categories)
+<!DOCTYPE html>
+<html lang='en'>
+  <head>
+    <meta charset='utf-8'>
+      <title>Who Said It? - The latest Twitter Craze!</title>
+      <link type='text/css' rel='stylesheet' href='/static/css/twitter.css' />
+      <script type='text/javascript' src='/static/js/jquery-2.0.2.min.js'></script>
+      <script async type='text/javascript' src='/static/js/twitter.js'></script>
+      <script type='text/javascript'>
+        function loader(dir){
+          $$(window).load(function(){
+            if(dir === 'out'){
+              $$('#loader').fadeOut('slow');
+            }else{
+              $$('#loader').fadeIn('slow');
+            }
+          });
+        }
+        loader('out');
+      </script>
+  </head>
+  <body>
+    <div id='loader'></div>
+    <h1>Who said:</h1>
+    <blockquote>$phrase</blockquote><br />
+    <div class='users'>
+      $for user in users:
+          <div class='user'>
+            <a href='#'>
+              <img class='choice' id=$user.screen_name src=$user.profile_image_url.replace('_normal','') />
+            </a>
+            <h5 class='name'>$user.name</h5>
+            <h6 class='username'>@$user.screen_name</h6>
+          </div>
+    </div>
+    <div class='categories' id='open'>
+      <h2>Categories</h2>
+      $for category in categories:
+          $if category == session.twitterCategory:
+              <a href='#'>
+                <span style='display:block;' class='category' name=$category id='activeCategory'>$category</span>
+              </a>
+          $else:    
+              <a href='#'>
+                <span style='display: block;' class='category' name=$category>$category</span>
+              </a>
+      <img class='arrow' src='/static/img/arrow_down.png' />
+    </div><br />
+    <div id='outerResult'>
+      <div id='innerResult'></div>
+      <a href='/twitter' onclick='loader("in");'>
+        <span style='display: block;' id='tryAgain'>Try Again</span>
+      </a>
+    </div>
+  </body>
+</html>
