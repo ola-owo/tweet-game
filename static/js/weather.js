@@ -6,9 +6,9 @@ function getWeather(query, city, lat, lon){
   lon = lon || null;
 
   console.log('query: '+query+'; city: '+city+'; latitude: '+lat+'; longitude: '+lon);
-  if((lat != null) && (lon != null)){
+  if((lat != null) && (lon != null)){ //Both latitude and longitude are supplied
     var cityData = {'latitude':lat, 'longitude':lon};
-  }else if(city){
+  }else if(city != null){
     var cityData = {'cityCode':city};
   }else{
     var cityData = {'location':query};
@@ -80,7 +80,7 @@ $('a.slider').click(function(){
 $('#suggestions > ul').on('click', 'li', function(event){
   console.log('Suggestion click');
   var cityCode = $(this).attr('name');
-  getWeather(city=cityCode);
+  getWeather(query=null, city=cityCode);
 });
 
 //New location is typed in
