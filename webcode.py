@@ -241,13 +241,19 @@ class guess_tweet:
 
 class get_weather:
     def GET(self):
-        lat = web.input(latitude=None)
-        long_ = web.input(longitude=None)
-        loc = web.input(location='15239')
-        city = web.input(cityCode=None)
-        resp = weather.getWeather2(q=loc.location, cityCode=city.cityCode, latitude=lat.latitude, longitude=long_.longitude)
+        latitude = web.input(latitude=None)
+        longitude = web.input(longitude=None)
+        location = web.input(location='New York City')
+        suggs = []
+        if not latitude.latitude: # no coordinates given from the JavaScript code
+            latitude.latitude, longitude.longitude, suggs = weather.getGeoCode(location.location, maxResults='6')
+        if not latitude.latitude: # getGeoCode() returned False
+            notfound()
+        resp = weather.getWeather2(lat=latitude.latitude, lng=longitude.longitude)
+        oembed_coord = ','.join([latitude.latitude, longitude.longitude, '100km'])
+        oembed = twitter.oembed(q='weather OR clima', location=oembed_coord)
         return json.dumps(
-            {'conditions':resp[0], 'suggestions':resp[1]},
+            {'conditions':resp, 'suggestions':suggs, 'oembed':oembed},
             sort_keys=True,
             indent=2,
             separators=(',',': ')
@@ -273,7 +279,7 @@ class test:
         
         print "Your IP Address: "+IP_Address
         print "Your IP Number: "+IP_Number
-        print "Your Location: "+location
+        # print "Your Location: "+location
 
 if __name__ == '__main__':
     app.run()

@@ -43,8 +43,8 @@ def user_timeline(username, write=True, rts=True):
     except tweepy.TweepError, e:
         return e
 
-def oembed(query, location):
-    results = api.search(query, geocode=location)
+def oembed(q, location):
+    results = api.search(q, geocode=location)
     if len(results) == 0:
         return None
     _id = str(results[0].__getstate__()['id'])

@@ -1,16 +1,27 @@
-@import url(http://fonts.googleapis.com/css?family=Share+Tech);
+@import url(http://fonts.googleapis.com/css?family=Share+Tech|Raleway:200|Roboto:100);
 *{
   font-size:24px;
   font-family:Ubuntu, Segoe UI, sans-serif;
-  }
+  color:whitesmoke;
+  text-shadow:0 0 3px black;
+}
 
 a{
   text-decoration:none;
   color:black;
-  }
+}
 
-a:hover{color:#0000CC}
-
+a:hover{color:white}
+button{
+  color:black;
+  text-shadow:none;
+}
+.slider{
+  font-size:75%;
+  cursor:pointer;
+  color:rgba(255,255,255,0.8);
+  text-shadow:0 0 1px black;
+}
 #loader{
   position:fixed;
   left:0px;
@@ -19,7 +30,7 @@ a:hover{color:#0000CC}
   height:100%;
   z-index:9999;
   background:url('/static/icons/loader.gif') 50% 50% no-repeat #F9F9F9;
-  }
+}
 
 #ajax > div{display:block !important}
 
@@ -28,34 +39,40 @@ a:hover{color:#0000CC}
   position:relative;
   box-shadow:0px 0px 5px 5px gray;
   border-radius:4px;
-  background-color:rgb(240, 240, 240);
-  }
+  background: url('/static/img/Monkee_Boy_Blurred_Backgrounds/bkg-3.jpg') no-repeat;
+  /* background-color:rgb(240, 240, 240); */
+}
 
 #oembed *{display:default}
 
 #city{
   font-size:2em;
   display:inline;
-  }
+}
 
 #suggestions > ul{
   position:relative;
-  }
+}
 
 .closed > *:nth-child(2){display:none}
 
 #temp{
   float:right;
   text-align:right;
-  top:-3.5em;
+  top:0em;
   display:inline;
-  position:relative;
-  right:0.1em;
-  font-size:4em;
-  }
+  position:absolute;
+  right:3%;
+}
 
-#temp *{font-size:42px}
-
+#temp *{
+  font-family:"Raleway", sans-serif;
+  font-size:2em;
+}
+#current_temp{
+  font-family:"Roboto", sans-serif;
+  font-size:8em;
+}
 .high{color:red}
 .low{color:blue}
 
@@ -67,7 +84,7 @@ code{
   color:white;
   letter-spacing:1px;
   box-shadow:0 0 5px #AAA;
-  }
+}
 
 #crosshair{
   cursor:pointer;
@@ -75,10 +92,14 @@ code{
   transition: transform 0.5s;
   /* Safari */
   -webkit-transition: transform 0.5s;
-  }
+}
 
 #crosshair:hover{
   transform:rotate(180deg);
   -ms-transform: rotate(30deg); /*IE9*/
   -webkit-transform: rotate(30deg); /*Safari+Chrome*/
-  }
+}
+#newLocation{
+  position:absolute;
+  bottom:5%;
+}

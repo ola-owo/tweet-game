@@ -5,7 +5,7 @@
   border:2px solid gray;
   border-radius:20px;
   padding:10px;
-  background:url('/static/icons/weatherbg.png');
+  background:url('/static/img/weatherbg.png');
   background-size:100% 100%;
   opacity:0.55;
   margin-left:10%;
