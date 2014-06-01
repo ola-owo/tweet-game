@@ -41,7 +41,7 @@ function getWeather(query, lat, lon){
           $('#city').text(conditions.name + ', ' + conditions.sys.country);
         } // maybe there's a better way to do the above?
         $('#current_temp').html(Math.round(conditions.main.temp)+'&deg;');
-        var highlow = '<span class="low">'+Math.round(conditions.main.temp_min)+'</span>/<span class="high">'+Math.round(conditions.main.temp_max)+'</span>';
+        var highlow = '<span class="low">'+Math.round(conditions.main.temp_min)+'</span><span>/</span><span class="high">'+Math.round(conditions.main.temp_max)+'</span>';
         $('.highlow').html(highlow);
         var w_cond = conditions.weather.main;
         $('.conditions').text(w_cond);
