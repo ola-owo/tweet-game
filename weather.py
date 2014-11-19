@@ -11,34 +11,10 @@ import twitter
 API_KEY = os.environ['WUNDERGROUND_KEY']
 OWM_KEY = os.environ['OWM_KEY']
 MQ_KEY = os.environ['MAPQUEST_KEY']
-# Weatherbug is DEFUNCT
-# WXBUG_KEY = os.environ['WXBUG_KEY']
-# WXBUG_SECRET = os.environ['WXBUG_SECRET']
 
 BASE_URL = 'http://api.wunderground.com/api/%s/' % API_KEY
 BASE_URL_OWM = 'http://openweathermap.org/data/2.3/weather?'
 BASE_URL_MQ = 'http://open.mapquestapi.com/geocoding/v1/address?'
-# def getToken():
-#     c_key = WXBUG_KEY
-#     c_secret = WXBUG_SECRET
-#     access_call = 'https://thepulseapi.earthnetworks.com/oauth20/token?grant_type=client_credentials\
-# &client_id=%s&client_secret=%s&' % (c_key, c_secret)
-#     API_KEY2 = json.loads(urlopen(access_call).read().decode())['OAuth20']['access_token']['token']
-# #Initial getToken()
-# c_key = 'V2Pjr6F2YFmhlc5kfrTVo61BXOUgtuX0'
-# c_secret = 'QvbAR5HhwxsncV8p'
-# access_call = 'https://thepulseapi.earthnetworks.com/oauth20/token?grant_type=client_credentials\
-# &client_id=%s&client_secret=%s&' % (c_key, c_secret)
-# API_KEY2 = json.loads(urlopen(access_call).read().decode())['OAuth20']['access_token']['token']
-
-#with open('citycodes.txt', 'r') as f:
-#    CITYCODES = []
-#    for line in f.readlines():
-#        if not line.startswith('#'):
-#            CITYCODES.append(line.strip('\n').split('|'))
-#with open('citydict', 'rb') as f:
-#    #Loads City Code Dictionary, keyed by first letter
-#    CITYCODES = cPickle.load(f)
 
 class Weather:
     def __init__(self, location, features=['conditions'], icon_set = '/i/'):

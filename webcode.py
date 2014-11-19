@@ -52,10 +52,10 @@ else:
 render = web.template.render('templates/', globals={'session':session})
 
 #Get current best/worst reddit post
-if randint(0,1) == 0:
-    redditRating = 'worst'
-else:
+if randint(0,1):
     redditRating = 'best'
+else:
+    redditRating = 'worst'
 try:
     if redditRating == 'worst':
         redditPost = reddit.worstPost()
