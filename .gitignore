@@ -3,4 +3,4 @@
 *.swp
 heroku.log
 sessions/*
-.env
+secret.env
