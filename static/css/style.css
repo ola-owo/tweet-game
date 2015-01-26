@@ -1,5 +1,6 @@
 *{
   font-family:Ubuntu, Garamond, sans-serif;
+  /*
   color:brown;
   font-size:12px;
   text-shadow:
@@ -7,6 +8,7 @@
   1px -1px 0 #FFFFFF,
   -1px 1px 0 #FFFFFF,
   1px 1px 0 #FFFFFF;
+  */
   }
 
 #container{

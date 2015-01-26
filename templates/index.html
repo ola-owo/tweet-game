@@ -1,4 +1,4 @@
-$def with(title, todos, file_too_big, posts)
+$def with(title, todos, file_too_big, posts, reddit_active_sort)
 <!DOCTYPE html>
  <html lang='en'>
   <head>
@@ -6,75 +6,94 @@ $def with(title, todos, file_too_big, posts)
     <title>$title</title>
     <link type='text/css' rel='stylesheet' href='/static/css/style.css' />
     <link type='text/css' rel='stylesheet' href='/static/css/reddit.css' />
+    <link type='text/css' rel='stylesheet' href='/static/css/hp2.css' />
     <link type='image/gif' rel='shortcut icon' href='/static/img/colors.gif' />
     <script type='text/javascript' src='/static/js/jquery-2.0.2.min.js'></script>
     <script async type='text/javascript' src='/static/js/reddit.js'></script>
   </head>
   <body>
+    <div id='overlay'></div>
     <div id='container'>
-      <div class='outsideReddit' style='float:right'>
-        <img class='logo' src='/static/img/reddit-alien.png' align="middle" />
-        <div class=categories>
-          $for cat in ['Hot', 'New', 'Top', 'Controversial']:
-              <div class='category'>
-                <a href='#'>$cat</a>
-              </div>
+      <nav><!-- navigation bar --></nav>
+      <header id='background'>
+        <div id='background-content'>
+          <h1>Welcome Home.</h1>
         </div>
-        <div class='outerReddit'>
-          $for post in posts:
-              <div class='innerReddit'>
-                <h4><a href=$post['url']>$post['title']</a></h4>
-                <p>Posted by
-                  <a href="http://reddit.com/u/$post['author']">$post['author']</a>
-                to <a href="http://reddit.com/r/$post['subreddit']">$post['subreddit']</a></p>
-                <p><a href="http://reddit.com$post['permalink']">Comments: $post['num_comments']</a></p>
-              </div>
+      </header>
+      <main>
+        <div id='reddit'>
+          <h4>Reddit Feed</h4>
+          <div class='categories'>
+            $for cat in ['Hot', 'New', 'Top', 'Controversial']:
+                <a href='#'>
+                $if cat.lower() == reddit_active_sort:
+                    <div class='category' id='activeRedditSort'>$cat</div>
+                $else:
+                    <div class='category'>$cat</div>
+                </a>
+          </div>
+          <div class='outerReddit'>
+            $for post in posts:
+                <div class='innerReddit'>
+                  <h4><a href=$post['url']>$post['title']</a></h4>
+                  <p>Posted by
+                    <a href="http://reddit.com/u/$post['author']">$post['author']</a>
+                  to <a href="http://reddit.com/r/$post['subreddit']">$post['subreddit']</a></p>
+                  <p><a href="http://reddit.com$post['permalink']">Comments: $post['num_comments']</a></p>
+                </div>
+                $if post != posts[-1]:
+                    <hr>
+          </div>
         </div>
-      </div>
 
-      <div>
-        <table>
-        <th>Database Items</th>
-        $for todo in todos:
-            <tr>
-              <td>$todo.title</td>
-              <td>
-                <form method='post' action='remove/$todo.id'>
-                  <input type='submit' value="Delete">
-                </form>
-              </td>
-            </tr>
-        </table>
-        <br/>
-        <form method='post' action='add'>
-          <input type='text' name='title' >
-          <input type='submit' value='Add' >
-        </form>
-        <br/>
-      </div>
+        <div id='left'>
+          <table>
+          <th>Stuff to Do</th>
+          $for todo in todos:
+              <tr>
+                <td>$todo.title</td>
+                <td>
+                  <form method='post' action='remove/$todo.id'>
+                    <button type='submit'>Delete</button>
+                  </form>
+                </td>
+              </tr>
+          </table>
+          <br/>
+          <form method='post' action='add'>
+            <input type='text' name='title' >
+            <button type='submit'>Give Feedback</button>
+          </form>
+          <br/>
+          <div>
+            <p>Upload a background image:</p>
+            <form id='bgAdd' method='post' enctype='multipart/form-data' action='bg_add'>
+              <input type='file' name='bgimg' accept='image/*, audio/midi'>
+              <input type='submit' value='Submit'>
+              $if file_too_big:
+                  <script type='text/javascript'>alert('File too big!')</script>
+            </form>
+          </div>
 
-      <div>
-        <p>Upload a background image:</p>
-        <form id='bgAdd' method='post' enctype='multipart/form-data' action='bg_add'>
-          <input type='file' name='bgimg' accept='image/*, audio/midi'>
-          <input type='submit' value='Submit'>
-          $if file_too_big:
-              <script type='text/javascript'>alert('File too big!')</script>
-        </form>
-      </div>
-
-      <div><embed src="static/user/bg.mid" loop='true'></div>
+          <div><embed src="static/user/bg.mid" loop='true'></div>
+        </div>
+      </main>
     </div>
 
-    <script type='text/javascript'>
+    <script type="text/javascript">
       window.onload = function(){
-        document.body.style.backgroundImage = "url('/static/user/bg.jpg') no-repeat center center fixed";
+        document.getElementById('background').style.backgroundImage = "url('/static/user/bg.jpg') no-repeat center center fixed";
+        document.getElementById('background').style.backgroundSize = "100% auto";
       };
     </script>
-    <style type='text/css'>
-      body{
-        background:url('/static/user/bg.jpg') no-repeat center center fixed;
-        background-size:100% 100%; 
+    <style type="text/css">
+      header{
+        background: url('/static/user/bg.jpg') no-repeat center center;
+        background-size: 100% auto;
+        border-bottom: 2px solid darkgray;
+        box-shadow: 0 5px 5px -1px darkgray inset;
+        filter: grayscale(30%);
+        height: 30em;
       }
     </style>
   </body>

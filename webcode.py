@@ -98,7 +98,7 @@ class index:
         with open('static/user/bg.mid', 'wb') as f:
             f.write(mid)
 
-        return render.index(redditPost, todos, i.file_too_big, posts)
+        return render.index(redditPost, todos, i.file_too_big, posts, session.redditSort)
 
 class birthday:
     def GET(self):
@@ -140,7 +140,7 @@ class reddit_frontpage:
             session.redditSort = 'hot'
         fp = reddit.FrontPage(sort=session.redditSort)
         posts = fp.getPosts()
-        return render.reddit(posts)
+        return render.reddit(posts, session.redditSort)
     def POST(self):
         sort = web.input(category='default').category
         web.debug('Sort: '+sort)

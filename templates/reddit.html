@@ -1,4 +1,4 @@
-$def with(posts)
+$def with(posts, active_sort)
 <!DOCTYPE html>
 <html lang='en'>
   <head>
@@ -9,13 +9,17 @@ $def with(posts)
     <script async type='text/javascript' src='static/js/reddit.js'></script>
   </head>
   <body>
-    <div class='outsideReddit'>
-      <img class='logo' src='/static/img/reddit-alien.png' align="middle" />
-      <div class=categories>
+    <div id='reddit'>
+      <div class='categories'>
         $for cat in ['Hot', 'New', 'Top', 'Controversial']:
-            <div class='category'>
-              <a href='#'>$cat</a>
-            </div>
+            $if cat == $active_sort.title():
+                <a href='#'>
+                  <div class='category' id='activeRedditSort'>$cat</div>
+                </a>
+            $else:
+                <a href='#'>
+                  <div class='category'>$cat</div>
+                </a>
       </div>
     <div class='outerReddit'>
       $for post in posts:
