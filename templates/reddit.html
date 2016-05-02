@@ -12,7 +12,7 @@ $def with(posts, active_sort)
     <div id='reddit'>
       <div class='categories'>
         $for cat in ['Hot', 'New', 'Top', 'Controversial']:
-            $if cat == $active_sort.title():
+            $if cat == active_sort.title():
                 <a href='#'>
                   <div class='category' id='activeRedditSort'>$cat</div>
                 </a>

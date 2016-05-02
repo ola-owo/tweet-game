@@ -199,7 +199,12 @@ class who_said:
         category = session.twitterCategory
         puzzle = twitter.getNounPhrases(tagger, category)
         choices = puzzle['otherChoices']
-        web.debug('Username: %s\nPhrase: %s' % (puzzle['username'], puzzle['phrases']))
+        puzzle_username = puzzle['username'].encode('ascii', 'ignore').encode('ascii', 'ignore')
+        puzzle_phrases = puzzle['phrases'].decode('utf-8').encode('ascii', 'ignore')
+        web.debug('Username: {0}\nPhrase: {1}'.format(
+            puzzle_username,
+            puzzle_phrases
+        ))
         categories = list(twitter.CELEBS.keys())
         session.twitterName = puzzle['username'].decode('utf-8').lower()
         session.twitterPhrase = puzzle['phrases'].decode('utf-8')
@@ -211,7 +216,12 @@ class who_said2:
         category = session.twitterCategory
         puzzle = twitter.getNounPhrases(tagger, category)
         choices = puzzle['otherChoices']
-        web.debug('Username: %s\nPhrase: %s' % (puzzle['username'], puzzle['phrases']))
+        puzzle_username = puzzle['username'].encode('ascii', 'ignore').encode('ascii', 'ignore')
+        puzzle_phrases = puzzle['phrases'].decode('utf-8').encode('ascii', 'ignore')
+        web.debug('Username: {0}\nPhrase: {1}'.format(
+            puzzle_username,
+            puzzle_phrases
+        ))
         categories = list(twitter.CELEBS.keys())
         session.twitterName = puzzle['username'].lower()
         session.twitterPhrase = puzzle['phrases']
