@@ -1,5 +1,5 @@
 #!/usr/bin/python
-#Implements WeatherBug and Weather Underground APIs
+#Implements OpenWeatherMap and Weather Underground APIs
 from collections import OrderedDict
 from urllib2 import HTTPError,  urlopen
 from urllib import quote
@@ -12,11 +12,12 @@ API_KEY = os.environ['WUNDERGROUND_KEY']
 OWM_KEY = os.environ['OWM_KEY']
 MQ_KEY = os.environ['MAPQUEST_KEY']
 
-BASE_URL = 'http://api.wunderground.com/api/%s/' % API_KEY
+BASE_URL_WU = 'http://api.wunderground.com/api/%s/' % API_KEY
 BASE_URL_OWM = 'http://openweathermap.org/data/2.3/weather?'
 BASE_URL_MQ = 'http://open.mapquestapi.com/geocoding/v1/address?'
 
 class Weather:
+    'Weather object (using Weather Underground API)'
     def __init__(self, location, features=['conditions'], icon_set = '/i/'):
         self.location = location
         self.features = features
@@ -26,7 +27,7 @@ class Weather:
         formattedFeatures = '/'.join(self.features)
         params = '/'.join([formattedFeatures, 'q', self.location+'.json'])
 
-        URL = BASE_URL + params
+        URL = BASE_URL_WU + params
         try:
             resp = urlopen(URL)
         except HTTPError:
@@ -47,7 +48,7 @@ class Weather:
         return data
 
     def getRadar(self):
-        URL = BASE_URL + 'animatedradar/animatedsatellite/q/%s.gif' % self.location
+        URL = BASE_URL_WU + 'animatedradar/animatedsatellite/q/%s.gif' % self.location
         animation = urlopen(URL)
         with open('static/img/radar.gif', 'wb+') as f:
             f.write(animation.read())
@@ -80,7 +81,8 @@ def getGeoCode(q, **kwargs):
     return lat, lng, suggestions
     
 def getWeather2(lat, lng):
-    '''Search with OpenWeatherMap API'''
+    '''getWeather2(lat,lng) -> dict
+    Search with OpenWeatherMap API'''
     baseURL = 'http://api.openweathermap.org/data/2.5/weather?'
     params = ['lat='+lat, 'lon='+lng, 'APPID='+OWM_KEY, 'mode=json', 'units=imperial']
     paramString = '&'.join(params)
