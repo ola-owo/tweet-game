@@ -37,8 +37,8 @@ if web.config.get('_session') is None:
     session = web.session.Session(app, web.session.DiskStore('sessions'),
         initializer = {
             'redditSort': 'hot',
-            'prevLocation': '15239',
-            'prevWeather': weather.Weather('15239').getWeather(),
+            'prevLocation': '15222',
+            'prevWeather': weather.Weather('15222').getWeather(),
             'twitterName': 'username',
             'twitterPhrase': 'tweet',
             'twitterCategory': 'popular',
