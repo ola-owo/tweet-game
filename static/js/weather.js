@@ -70,7 +70,21 @@ function getWeather(query, lat, lon){
     }
   });
 }
+
 var comma = /,.*,/i;
+
+// Get location using GeoLocationq
+function showPosition(position){
+  getWeather(query=null, lat=position.coords.latitude, lon=position.coords.longitude);
+}
+function getLocation(){
+  //var x = document.getElementById('crosshair');
+  if (navigator.geolocation){
+    navigator.geolocation.getCurrentPosition(showPosition);
+  }else{
+    console.log('Please use a modern browser that supports Geolocation.');
+  }
+}
 
 //User clicks on slider menu
 $('.slider').click(function(){

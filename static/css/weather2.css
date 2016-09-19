@@ -45,6 +45,7 @@ button{
   box-shadow:0px 0px 5px 5px gray;
   border-radius:4px;
   background: url('/static/img/Monkee_Boy_Blurred_Backgrounds/bkg-3.jpg') no-repeat;
+  background-size: cover;
   /* background-color:rgb(240, 240, 240); */
 }
 
@@ -81,6 +82,7 @@ button{
 .highlow{
   font-family:"Raleway", sans-serif;
   font-size:4em;
+  margin-top: 0.2em;
 }
 
 .highlow *{font-size:1em}
@@ -98,20 +100,27 @@ code{
   box-shadow:0 0 5px #AAA;
 }
 
-#crosshair{
-  cursor:pointer;
-  border-radius:40px;
-  transition: transform 0.5s;
-  /* Safari */
-  -webkit-transition: transform 0.5s;
-}
-
-#crosshair:hover{
-  transform:rotate(180deg);
-  -ms-transform: rotate(30deg); /*IE9*/
-  -webkit-transform: rotate(30deg); /*Safari+Chrome*/
+.getLocation{
+  height: 2em;
+  display: inline-block;
+  cursor: pointer;
 }
 #newLocation{
-  position:absolute;
-  bottom:5%;
+  display: inline-block;
+  padding:0.2em;
+  border-radius:3px;
+}
+#newLocation input{
+  border:none;
+}
+#newLocation, #newLocation *{
+  background-color:white;
+}
+button{
+  border:none;
+  cursor:pointer;
+}
+button img{
+  height:1em;
+  width:1em;
 }

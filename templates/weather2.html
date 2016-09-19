@@ -10,19 +10,6 @@ $def with()
     <script>var defaultLocation = $session.prevLocation</script>
     <script async src='/static/js/weather.js'></script>
     <script>
-      function getLocation(){
-        //var x = document.getElementById('crosshair');
-        if (navigator.geolocation){
-          navigator.geolocation.getCurrentPosition(showPosition);
-        }else{
-          console.log('Please use a less crappy browser (one that supports Geolocation).');
-        }
-      }
-      function showPosition(position){
-        getWeather(query=null, lat=position.coords.latitude, lon=position.coords.longitude);
-      }
-    </script>
-    <script>
       $$(window).load(function(){
         $$('#loader').fadeOut('slow');
       });
@@ -33,6 +20,7 @@ $def with()
       <div id='ajax'></div>
       <div id='left'>
         <div id='city'></div>
+        <img class='getLocation' src='/static/img/Map-Location-128.png' onclick='getLocation()'>
         <div id='suggestions' class='closed'>
           <p class='slider'>Other Suggestions (click to open/close):</p>
           <ul></ul>
@@ -40,16 +28,10 @@ $def with()
         <div id='oembed'></div>
         <form id='newLocation'>
           <label form='newLocation'>
-            Change Your Location:
             <input type='text' name='location'>
           </label>
-          <button type='submit'>Search</button>
+          <button type='submit'><img src='/static/img/Search-Find-128.png'></button>
         </form>
-        <svg id='crosshair' height='100' width='100' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/xlink' onclick='getLocation();'>
-          <g transform='scale(0.1)'>
-            <image alt="Click here to select your current location" x='0' y='0' width='730' height='1000' xlink:href='/static/img/crosshair.svg'>
-          </g>
-        </svg>
       </div>
       <div id='right'>
         <div id='temp'>
@@ -59,5 +41,6 @@ $def with()
         </div>
       </div>
     </div>
+    <script>getLocation();</script>
   </body>
 </html>

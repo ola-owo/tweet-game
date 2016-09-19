@@ -59,7 +59,7 @@ def getNounPhrases(tagger, category):
         celebList = CELEBS['popular']
     random.shuffle(celebList)
     user_name = celebList[0]
-    web.debug('Twitter.py Line 52; Username: '+user_name)
+    web.debug('twitter.getNounPhrases: Username: '+user_name)
     user = api.get_user(user_name)
     choices = [user]
     for i in celebList[1:4]:
@@ -67,21 +67,21 @@ def getNounPhrases(tagger, category):
     random.shuffle(choices)
     
     tl = user_timeline(user_name, write=False, rts=False)
-    if len(tl) == 0:
+    if not tl:
         getNounPhrases(tagger, category)
     random.shuffle(tl)
     for tweet in tl:
-        if len(tweet) == 0:
+        if not tweet:
             continue
         lock.acquire() # will block if lock is already held
         try:
             web.debug(str(now())+' writing to tagger...')
             tagger.stdin.write(tweet.replace('[\\s]+', ' ')+'.\n')
             taggedTweet = tagger.stdout.readline().strip('\t\n').replace('\t', '\xe2\x80\xa6') #\xe2\x80\xa6 = "…"
-            web.debug(str(now())+' tags received.')
         finally:
             lock.release()
         if len(taggedTweet.split('\xe2\x80\xa6')) >= 3:
+            web.debug(str(now())+' tags received.')
             break
     else:
         getNounPhrases(tagger, category)
