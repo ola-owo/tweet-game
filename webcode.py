@@ -52,19 +52,26 @@ else:
 render = web.template.render('templates/', globals={'session':session})
 
 #Get current best/worst reddit post
-if randint(0,1):
-    redditRating = 'best'
-else:
-    redditRating = 'worst'
 try:
-    if redditRating == 'worst':
-        redditPost = reddit.worstPost()
-    else:
-        redditPost = reddit.bestPost()
-    db.update('reddit', where="rating='%s'"%redditRating, post=redditPost)
+    redditPost = reddit.bestPost()
+    db.update('reddit', where="rating='best'", post=redditPost)
 except TypeError:
     redditPostIter = db.select('reddit', what='post', where="rating='%s'"%redditRating)
     redditPost = redditPostIter.list()[0]['post']
+### Back page currently not working due to api changes
+# if randint(0,1):
+#     redditRating = 'best'
+# else:
+#     redditRating = 'worst'
+# try:
+#     if redditRating == 'worst':
+#         redditPost = reddit.worstPost()
+#     else:
+#         redditPost = reddit.bestPost()
+#     db.update('reddit', where="rating='%s'"%redditRating, post=redditPost)
+# except TypeError:
+#     redditPostIter = db.select('reddit', what='post', where="rating='%s'"%redditRating)
+#     redditPost = redditPostIter.list()[0]['post']
 
 def notfound():
     web.ctx.status = '404 File Not Found'
