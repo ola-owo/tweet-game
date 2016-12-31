@@ -31,7 +31,7 @@ urls = (
     )
 web.config.debug = False
 app = web.application(urls, globals(), autoreload=True)
-db = web.database(dbn='postgres', db='dd98ma04le409a', user=S3_USER, pw=S3_PASS, host='ec2-54-221-240-24.compute-1.amazonaws.com', port='5432')
+db = web.database(dbn='postgres', db='d7v1a0j7iped07', user=S3_USER, pw=S3_PASS, host='ec2-54-243-214-198.compute-1.amazonaws.com', port='5432')
 tagger = Popen(['java', '-cp', 'ark-tweet-nlp-0.3.jar', 'cmu.arktweetnlp.Tagger'], stdin=PIPE, stdout=PIPE)
 if web.config.get('_session') is None:
     session = web.session.Session(app, web.session.DiskStore('sessions'),
