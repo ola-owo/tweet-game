@@ -18,19 +18,30 @@ h1{
   filter: none;
 }
 nav{
-  position: fixed;
   top: 0;
   width: 100%;
   z-index: 1;
 }
+nav a{
+  transition: background-color 200ms, color 100ms;
+  height: 100%;
+  background-color: ;
+  color:#16A2A2;
+  padding:0.5em 1em 0.5em 1em;
+  margin:0 1em 0 1em;
+  display:inline-block;
+  border-radius: 5px;
+}
+nav a:hover{
+  background-color: #16A2A2;
+  color:white;
+}
 header{
-  top: 0px;
   background-size: 100% 100%;
 }
 
 main{
   padding: 10em 3em ;
-  width: 100%;
 }
 main > *{
   background-color: #FAFAFA;
